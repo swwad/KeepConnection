@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Language -->
+    <string name="app_name">藍牙防丟器</string>
+    <string name="run_in_service">藍牙防丟器啟動</string>
+    <string name="connecting_device">目前防丟裝置:</string>
+    <string name="warning_text">本程式可在藍牙裝置離開手機連線範圍時發出警示，\n但實際使用情況仍依手機或裝置穩定度為主，\n\n使用者若因使用本程式造成之損失，開發者不承擔任何責任，\n開始使用本系統視為同意以上聲明事項。</string>
+    <string name="warning_no_btdevice">請先選擇欲偵測的藍牙裝置。</string>
+    <string name="warning_method">警示方式</string>
+    <string name="warning_flash">相機閃光燈閃爍</string>
+    <string name="warning_screen">螢幕亮起</string>
+    <string name="warning_audio">聲音</string>
+    <string name="warning_vibrate">震動</string>
+    <string name="warning_popwinodw">對話框提示</string>
+    <string name="warning_dialog">警告!\n%s 離開連線範圍，請立刻確認。</string>
+    <string name="action_settings">連接裝置設定</string>
+    <string name="select_btdevice">選取藍牙設備</string>
+    <string name="auto_start">開機自動啟動</string>
+    <string name="support_me">支持本程式</string>
+    <string name="support_me_hint">您的支持可以幫助小弟開發更多新程式，\n支持本程式後，將可啟動所有功能。\n若您已支持過，也請點此直接取回原交易資料!</string>
+    <string name="option_on">開啟</string>
+    <string name="option_off">關閉</string>
+    <string name="option_ok">我知道了</string>
+    <string name="iabhelper_failed">查詢購買資訊失敗，請稍後再試!</string>
+    <string name="iabhelper_fullversion">感謝您的支持，將啟用所有功能。</string>
+
+    <string-array name="warning_option_string">
+        <item>關閉</item>
+        <item>5秒</item>
+        <item>15秒</item>
+        <item>60秒</item>
+    </string-array>
+    <string-array name="warning_option_value">
+        <item>0</item>
+        <item>5</item>
+        <item>15</item>
+        <item>60</item>
+    </string-array>
+
+    <!-- Preference Key -->
+    <string name="key_setting_title">key_setting_title</string>
+    <string name="key_setting_select_btdevice">key_setting_select_btdevice</string>
+    <string name="key_setting_auto_start">key_setting_auto_start</string>
+    <string name="key_setting_support_me">key_setting_support_me</string>
+    <string name="key_notify_title">key_notify_title</string>
+    <string name="key_notify_screen">key_notify_screen</string>
+    <string name="key_notify_flash">key_notify_flash</string>
+    <string name="key_notify_audio">key_notify_audio</string>
+    <string name="key_notify_vibrate">key_notify_vibrate</string>
+    <string name="key_notify_popwindow">key_notify_popwindow</string>
+    <string name="key_full_version">key_full_version</string>
+
+    <!-- Share Preference -->
+    <string name="pref_warning_text">pref_warning_text</string>
+    <string name="pref_setting_bt_device_address">pref_setting_bt_device_address</string>
+    <string name="pref_setting_bt_device_name">pref_setting_bt_device_name</string>
+    <string name="pref_setting_auto_start">pref_setting_auto_start</string>
+    <string name="pref_warning_screen">pref_warning_screen</string>
+    <string name="pref_warning_audio">pref_warning_audio</string>
+    <string name="pref_warning_flash">pref_warning_flash</string>
+    <string name="pref_warning_vibrator">pref_warning_vibrator</string>
+    <string name="pref_warning_popwindow">pref_warning_popwindow</string>
+
+</resources>
