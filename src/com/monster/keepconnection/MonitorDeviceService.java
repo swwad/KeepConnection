@@ -1,33 +1,35 @@
 package com.monster.keepconnection;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.lang.reflect.Method;
 
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.Parameters;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.view.WindowManager;
-import com.monster.keepconnection.R;
+
+enum InternetStatus {
+	None, Mobile_Data_Off, Mobile_Data_On, Wifi_Data_Off, Wifi_Data_On, Internet_Failed, Inter_Success;
+}
 
 public class MonitorDeviceService extends Service {
 
@@ -35,8 +37,61 @@ public class MonitorDeviceService extends Service {
 	Camera camera;
 	Parameters camera_parameters;
 	int iBackCameraID = -1;
-	Set<BluetoothDevice> pairedDevices = new HashSet<BluetoothDevice>();
+	int iRetryCounter = 0;
 	boolean bStopAllWarning = false;
+	boolean bInternetStatus = false;
+	InternetStatus isStatus = InternetStatus.None;
+
+	Handler hCheckInternetStatus = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			if (isConnectingToInternet() == false) {
+
+				if (iRetryCounter > 3) {
+					iRetryCounter = 0;
+
+					if (isStatus == InternetStatus.Mobile_Data_Off) {
+						updateAPN(MonitorDeviceService.this, true);
+						isStatus = InternetStatus.Mobile_Data_On;
+
+					} else if (isStatus == InternetStatus.Mobile_Data_On) {
+						updateAPN(MonitorDeviceService.this, false);
+						isStatus = InternetStatus.Mobile_Data_Off;
+					}
+
+				} else {
+					iRetryCounter++;
+				}
+				hCheckInternetStatus.sendMessageDelayed(new Message().obtain(), 10000);
+			} else {
+				iRetryCounter = 0;
+				hCheckInternetStatus.sendMessageDelayed(new Message().obtain(), 30000);
+			}
+
+		}
+	};
+
+	private static void updateAPN(Context paramContext, boolean enable) {
+		try {
+			ConnectivityManager connectivityManager = (ConnectivityManager) paramContext.getSystemService("connectivity");
+			Method setMobileDataEnabledMethod = ConnectivityManager.class.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
+			setMobileDataEnabledMethod.setAccessible(true);
+			setMobileDataEnabledMethod.invoke(connectivityManager, enable);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private boolean isConnectingToInternet() {
+		ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (connMgr != null) {
+			NetworkInfo info = connMgr.getActiveNetworkInfo();
+			if (info != null)
+				return (info.isConnected());
+		}
+		return false;
+	}
 
 	@Override
 	public void onCreate() {
@@ -48,30 +103,16 @@ public class MonitorDeviceService extends Service {
 				break;
 			}
 		}
-
-		if (getSharedPreferences(getPackageName(), MODE_PRIVATE).getString(getString(R.string.pref_setting_bt_device_address), "").length() == 0) {
-			stopSelf();
-		}
-
-		BluetoothAdapter.getDefaultAdapter().enable();
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		try {
-			unregisterReceiver(brReceiver);
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		}
-
-		try {
 			if (getSharedPreferences(getPackageName(), MODE_PRIVATE).getBoolean(getString(R.string.pref_setting_auto_start), false) || intent.getBooleanExtra(SettingActivity.StartFromActivity, false)) {
-				registerReceiver(brReceiver, new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED));
-				registerReceiver(brReceiver, new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED));
-				// registerReceiver(brReceiver, new
-				// IntentFilter(BluetoothDevice.ACTION_ACL_CONNECTED));
-				// registerReceiver(brReceiver, new
-				// IntentFilter(BluetoothDevice.ACTION_FOUND));
+				bStopAllWarning = false;
+				iRetryCounter = 0;
+				isStatus = InternetStatus.None;
+				hCheckInternetStatus.sendEmptyMessage(0);
 				showNotification();
 			} else {
 				stopSelf();
@@ -81,48 +122,6 @@ public class MonitorDeviceService extends Service {
 			stopSelf();
 		}
 		return super.onStartCommand(intent, flags, startId);
-	}
-
-	private final BroadcastReceiver brReceiver = new BroadcastReceiver() {
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			bStopAllWarning = false;
-			BluetoothDevice bdDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-			if ((BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(intent.getAction())) || (BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED.equals(intent.getAction()))) {
-				if (bdDevice.getAddress().equalsIgnoreCase(getSharedPreferences(getPackageName(), MODE_PRIVATE).getString(getString(R.string.pref_setting_bt_device_address), ""))) {
-
-					warningAudio(Integer.valueOf(getSharedPreferences(getPackageName(), MODE_PRIVATE).getString(getString(R.string.pref_warning_audio), "0")));
-					warningFlash(Integer.valueOf(getSharedPreferences(getPackageName(), MODE_PRIVATE).getString(getString(R.string.pref_warning_flash), "0")));
-					warningVibrator(Integer.valueOf(getSharedPreferences(getPackageName(), MODE_PRIVATE).getString(getString(R.string.pref_warning_vibrator), "0")));
-					if (getSharedPreferences(getPackageName(), MODE_PRIVATE).getBoolean(getString(R.string.pref_warning_screen), false)) {
-						warningScreen();
-					}
-					if (getSharedPreferences(getPackageName(), MODE_PRIVATE).getBoolean(getString(R.string.pref_warning_popwindow), false)) {
-						warningDialog();
-					}
-				}
-			}
-			// else if
-			// (BluetoothDevice.ACTION_ACL_CONNECTED.equals(intent.getAction()))
-			// {
-			// if
-			// (bdDevice.getAddress().equalsIgnoreCase(getSharedPreferences(getPackageName(),
-			// MODE_PRIVATE).getString(getString(R.string.pref_setting_bt_device_address),
-			// ""))) {
-			// hFindDevice.removeCallbacksAndMessages(null);
-			// }
-			// }
-		}
-	};
-
-	@Override
-	public void onDestroy() {
-		try {
-			unregisterReceiver(brReceiver);
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void warningDialog() {

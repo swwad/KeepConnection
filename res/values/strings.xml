@@ -22,8 +22,6 @@
     <string name="option_ok">我知道了</string>
     <string name="iabhelper_failed">查詢購買資訊失敗，請稍後再試!</string>
     <string name="iabhelper_fullversion">感謝您的支持，將啟用所有功能。</string>
-    <string name="setting_autoenable_bluetooth">自動開啟藍牙</string>
-    <string name="pls_turn_on_bluetooth">請開啟藍牙功能</string>
 
     <string-array name="warning_option_string">
         <item>關閉</item>

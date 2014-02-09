@@ -96,16 +96,7 @@ public class SettingActivity extends PreferenceActivity implements OnPreferenceC
 		return true;
 	}
 	
-	private static void updateAPN(Context paramContext, boolean enable) {
-	    try {
-	        ConnectivityManager connectivityManager = (ConnectivityManager) paramContext.getSystemService("connectivity");
-	        Method setMobileDataEnabledMethod = ConnectivityManager.class.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
-	        setMobileDataEnabledMethod.setAccessible(true);
-	        setMobileDataEnabledMethod.invoke(connectivityManager, enable);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	}
+
 
 
 	public void ToastUiThread(final Context context, final String strMessage, final int duration) {
