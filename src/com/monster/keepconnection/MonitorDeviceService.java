@@ -18,9 +18,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
@@ -28,7 +26,7 @@ import android.os.Vibrator;
 import android.view.WindowManager;
 
 enum InternetStatus {
-	None, Mobile_Data_Off, Mobile_Data_On, Wifi_Data_Off, Wifi_Data_On, Internet_Failed, Inter_Success;
+	None, Mobile_Data_Failed, Mobile_Data_Off, Wifi_Data_Failed, Wifi_Data_Off, AIR_PLANE, Internet_Unknow, Internet_Failed, Inter_Success;
 }
 
 public class MonitorDeviceService extends Service {
@@ -42,36 +40,7 @@ public class MonitorDeviceService extends Service {
 	boolean bInternetStatus = false;
 	InternetStatus isStatus = InternetStatus.None;
 
-	Handler hCheckInternetStatus = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			super.handleMessage(msg);
-			if (isConnectingToInternet() == false) {
-
-				if (iRetryCounter > 3) {
-					iRetryCounter = 0;
-
-					if (isStatus == InternetStatus.Mobile_Data_Off) {
-						updateAPN(MonitorDeviceService.this, true);
-						isStatus = InternetStatus.Mobile_Data_On;
-
-					} else if (isStatus == InternetStatus.Mobile_Data_On) {
-						updateAPN(MonitorDeviceService.this, false);
-						isStatus = InternetStatus.Mobile_Data_Off;
-					}
-
-				} else {
-					iRetryCounter++;
-				}
-				hCheckInternetStatus.sendMessageDelayed(new Message().obtain(), 10000);
-			} else {
-				iRetryCounter = 0;
-				hCheckInternetStatus.sendMessageDelayed(new Message().obtain(), 30000);
-			}
-
-		}
-	};
-
+	
 	private static void updateAPN(Context paramContext, boolean enable) {
 		try {
 			ConnectivityManager connectivityManager = (ConnectivityManager) paramContext.getSystemService("connectivity");
@@ -112,7 +81,6 @@ public class MonitorDeviceService extends Service {
 				bStopAllWarning = false;
 				iRetryCounter = 0;
 				isStatus = InternetStatus.None;
-				hCheckInternetStatus.sendEmptyMessage(0);
 				showNotification();
 			} else {
 				stopSelf();

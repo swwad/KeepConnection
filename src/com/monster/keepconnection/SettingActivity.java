@@ -1,7 +1,5 @@
 package com.monster.keepconnection;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,6 +8,8 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,7 +17,6 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
-import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
 import com.util.IabHelper;
@@ -33,6 +32,12 @@ public class SettingActivity extends PreferenceActivity implements OnPreferenceC
 	final static String FullVersionID = "dontleave.full.version";
 
 	IabHelper mHelper;
+
+	int iRetryCounter = 0;
+	boolean bStopAllWarning = false;
+	boolean bInternetStatus = false;
+	InternetStatus isStatus = InternetStatus.None;
+	int iLastStatus = -1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,35 +74,167 @@ public class SettingActivity extends PreferenceActivity implements OnPreferenceC
 
 		return true;
 	}
-	
+
 	boolean aaa = false;
-	
+
 	@Override
 	public boolean onPreferenceClick(Preference preference) {
 		if (getString(R.string.key_setting_support_me).equals(preference.getKey())) {
-			ToastUiThread(this, "PP", Toast.LENGTH_SHORT);
 
-			aaa = !aaa;
-			
-			Method dataConnSwitchmethod;
-			Class telephonyManagerClass;
-			Object ITelephonyStub;
-			Class ITelephonyClass;
+			if (isConnectingToInternet() == false) {
 
-			TelephonyManager telephonyManager = (TelephonyManager) SettingActivity.this.getSystemService(Context.TELEPHONY_SERVICE);
+				switch (isStatus) {
+				case Inter_Success:
+				case None:
+					Toast.makeText(this, "Inter_Success or None", Toast.LENGTH_LONG).show();
+					isStatus = InternetStatus.Internet_Failed;
+					break;
+				case Internet_Failed:
+					Toast.makeText(this, "Internet_Failed", Toast.LENGTH_LONG).show();
+					if (getConnectType() == ConnectivityManager.TYPE_MOBILE) {
+						isStatus = InternetStatus.Mobile_Data_Failed;
+					} else if (getConnectType() == ConnectivityManager.TYPE_WIFI) {
+						isStatus = InternetStatus.Wifi_Data_Failed;
+					} else {
+						isStatus = InternetStatus.Internet_Unknow;
+					}
+					break;
+				case Internet_Unknow:
+					Toast.makeText(this, "Internet_Unknow", Toast.LENGTH_LONG).show();
+					((WifiManager) getSystemService(Context.WIFI_SERVICE)).setWifiEnabled(false);
+					if (getConnectType() != ConnectivityManager.TYPE_MOBILE) {
+						updateAPN(SettingActivity.this, true);
+						isStatus = InternetStatus.None;
+					}
+					break;
+				case Mobile_Data_Failed:
+					Toast.makeText(this, "Mobile_Data_Failed", Toast.LENGTH_LONG).show();
+					updateAPN(SettingActivity.this, false);
+					isStatus = InternetStatus.Mobile_Data_Off;
+					break;
+				case Wifi_Data_Failed:
+					Toast.makeText(this, "Wifi_Data_Failed", Toast.LENGTH_LONG).show();
+					((WifiManager) getSystemService(Context.WIFI_SERVICE)).setWifiEnabled(false);
+					isStatus = InternetStatus.Wifi_Data_Off;
+					break;
+				case Mobile_Data_Off:
+					Toast.makeText(this, "Mobile_Data_Off", Toast.LENGTH_LONG).show();
+					if (getConnectType() != ConnectivityManager.TYPE_MOBILE) {
+						updateAPN(SettingActivity.this, true);
+						isStatus = InternetStatus.None;
+					}
+					break;
+				case Wifi_Data_Off:
+					Toast.makeText(this, "Wifi_Data_Off", Toast.LENGTH_LONG).show();
+					if (getConnectType() != ConnectivityManager.TYPE_WIFI) {
+						((WifiManager) getSystemService(Context.WIFI_SERVICE)).setWifiEnabled(true);
+						isStatus = InternetStatus.None;
+					}
+					break;
+				default:
 
-			try {
-				updateAPN(this, aaa);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				}
+
+			} else {
+				isStatus = InternetStatus.Inter_Success;
+				iLastStatus = getConnectType();
+				Toast.makeText(this, "Inter_Success", Toast.LENGTH_LONG).show();
 			}
+
 		}
 		return true;
 	}
-	
 
+	Handler hCheckInternetStatus = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			if (isConnectingToInternet() == false) {
 
+				if (iRetryCounter > 3) {
+					iRetryCounter = 0;
+
+					switch (isStatus) {
+					case Inter_Success:
+					case None:
+						isStatus = InternetStatus.Internet_Failed;
+						break;
+					case Internet_Failed:
+						if (getConnectType() == ConnectivityManager.TYPE_MOBILE) {
+							isStatus = InternetStatus.Mobile_Data_Failed;
+						} else if (getConnectType() == ConnectivityManager.TYPE_WIFI) {
+							isStatus = InternetStatus.Wifi_Data_Failed;
+						}
+						break;
+					case Mobile_Data_Failed:
+						updateAPN(SettingActivity.this, false);
+						isStatus = InternetStatus.Mobile_Data_Off;
+						break;
+					case Wifi_Data_Failed:
+						((WifiManager) getSystemService(Context.WIFI_SERVICE)).setWifiEnabled(false);
+						isStatus = InternetStatus.Wifi_Data_Off;
+						break;
+					case Mobile_Data_Off:
+						if (getConnectType() != ConnectivityManager.TYPE_MOBILE) {
+							updateAPN(SettingActivity.this, true);
+							isStatus = InternetStatus.None;
+						}
+						break;
+					case Wifi_Data_Off:
+						if (getConnectType() != ConnectivityManager.TYPE_WIFI) {
+							((WifiManager) getSystemService(Context.WIFI_SERVICE)).setWifiEnabled(true);
+							isStatus = InternetStatus.None;
+						}
+						break;
+					default:
+
+					}
+
+				} else {
+					iRetryCounter++;
+				}
+				hCheckInternetStatus.sendMessageDelayed(new Message().obtain(), 10000);
+			} else {
+				iRetryCounter = 0;
+				isStatus = InternetStatus.Inter_Success;
+				hCheckInternetStatus.sendMessageDelayed(new Message().obtain(), 30000);
+			}
+
+		}
+	};
+
+	void updateAPN(Context paramContext, boolean enable) {
+		try {
+			ConnectivityManager connectivityManager = (ConnectivityManager) paramContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+			Method setMobileDataEnabledMethod = ConnectivityManager.class.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
+			setMobileDataEnabledMethod.setAccessible(true);
+			setMobileDataEnabledMethod.invoke(connectivityManager, enable);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	boolean isConnectingToInternet() {
+		ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (connMgr != null) {
+			NetworkInfo info = connMgr.getActiveNetworkInfo();
+			if (info != null)
+				return (info.isConnected());
+		}
+		return false;
+	}
+
+	int getConnectType() {
+		int iType = -1;
+		ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (connMgr != null) {
+			NetworkInfo info = connMgr.getActiveNetworkInfo();
+			if (info != null) {
+				iType = info.getType();
+			}
+		}
+		return iType;
+	}
 
 	public void ToastUiThread(final Context context, final String strMessage, final int duration) {
 		runOnUiThread(new Runnable() {
