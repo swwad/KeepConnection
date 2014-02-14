@@ -4,19 +4,23 @@
     <!-- Language -->
     <string name="app_name">保持連線</string>
     <string name="run_in_service">保持連線 監視中...</string>
+    <string name="setting">設定</string>
+    <string name="scan_sec">檢查網路狀況間隔時間</string>
+    <string name="warning_toast">目前網路連線異常，請確認!</string>
+    <string name="action_3g_retry_strategy">3G/資料  網路異常策略</string>
+    <string name="action_airplane_retry">以飛航模式切換</string>
+    <string name="action_3g_retry">以 3G/資料 模式切換</string>
+    <string name="action_wifi_retry_strategy">Wifi 異常策略</string>
+    <string name="action_wifi_restart">重新開啟 Wifi 連線</string>
+    <string name="action_wifi_to_3g">強制切換至 3G/資料 模式</string>
+    <string name="auto_start">開機自動啟動</string>
+    <string name="support_me">支持本程式</string>
+    <string name="support_me_hint">您的支持可以幫助小弟開發更多新程式，\n支持本程式後，將可啟動所有功能。\n若您已支持過，也請點此直接升級為捐贈版本!</string>
     <string name="warning_method">提示方式</string>
     <string name="warning_flash">相機閃光燈閃爍</string>
     <string name="warning_screen">螢幕亮起提示</string>
     <string name="warning_audio">聲音提示</string>
     <string name="warning_vibrate">震動提示</string>
-    <string name="warning_toast">目前網路連線異常，請確認!</string>
-    <string name="action_method">重新啟動網路方式</string>
-    <string name="action_airplane">以飛航模式切換</string>
-    <string name="action_3g">以3G/資料模式切換</string>
-    <string name="action_wifi_to_3g">Wifi異常時，切換為3G網路</string>
-    <string name="auto_start">開機自動啟動</string>
-    <string name="support_me">支持本程式</string>
-    <string name="support_me_hint">您的支持可以幫助小弟開發更多新程式，\n支持本程式後，將可啟動所有功能。\n若您已支持過，也請點此直接升級為捐贈版本!</string>
     <string name="option_on">開啟</string>
     <string name="option_off">關閉</string>
     <string name="option_ok">我知道了</string>
@@ -35,33 +39,37 @@
         <item>15</item>
         <item>60</item>
     </string-array>
-    <string-array name="scan_option_string">
+    <string-array name="scan_sec_string">
         <item>關閉</item>
         <item>10秒</item>
         <item>30秒</item>
         <item>60秒</item>
+        <item>3分鐘</item>
+        <item>5分鐘</item>
+        <item>10分鐘</item>
     </string-array>
-    <string-array name="scan_option_value">
+    <string-array name="scan_sec_value">
         <item>0</item>
         <item>10</item>
         <item>30</item>
         <item>60</item>
+        <item>180</item>
+        <item>300</item>
+        <item>600</item>
     </string-array>
 
     <!-- Preference Key -->
     <string name="key_setting_title">key_setting_title</string>
-    <string name="key_setting_select_btdevice">key_setting_select_btdevice</string>
-    <string name="key_setting_bt_device_address">pref_setting_bt_device_address</string>
-    <string name="key_setting_bt_device_name">pref_setting_bt_device_name</string>
+    <string name="key_scan_sec">key_scan_sec</string>
+    <string name="key_action_3g_retry_strategy">key_action_3g_retry_strategy</string>
+    <string name="key_action_wifi_retry_strategy">key_action_wifi_retry_strategy</string>
     <string name="key_setting_auto_start">key_setting_auto_start</string>
     <string name="key_setting_support_me">key_setting_support_me</string>
-    <string name="key_setting_autoenable_bluetooth">key_autoenable_bluetooth</string>
     <string name="key_notify_title">key_notify_title</string>
     <string name="key_notify_screen">key_notify_screen</string>
     <string name="key_notify_flash">key_notify_flash</string>
     <string name="key_notify_audio">key_notify_audio</string>
     <string name="key_notify_vibrate">key_notify_vibrate</string>
-    <string name="key_notify_popwindow">key_notify_popwindow</string>
     <string name="key_full_version">key_full_version</string>
 
 </resources>

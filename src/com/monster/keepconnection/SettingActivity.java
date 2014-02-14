@@ -1,6 +1,9 @@
 package com.monster.keepconnection;
 
 import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -80,67 +83,70 @@ public class SettingActivity extends PreferenceActivity implements OnPreferenceC
 	@Override
 	public boolean onPreferenceClick(Preference preference) {
 		if (getString(R.string.key_setting_support_me).equals(preference.getKey())) {
-
-			if (isConnectingToInternet() == false) {
-
-				switch (isStatus) {
-				case Inter_Success:
-				case None:
-					Toast.makeText(this, "Inter_Success or None", Toast.LENGTH_LONG).show();
-					isStatus = InternetStatus.Internet_Failed;
-					break;
-				case Internet_Failed:
-					Toast.makeText(this, "Internet_Failed", Toast.LENGTH_LONG).show();
-					if (getConnectType() == ConnectivityManager.TYPE_MOBILE) {
-						isStatus = InternetStatus.Mobile_Data_Failed;
-					} else if (getConnectType() == ConnectivityManager.TYPE_WIFI) {
-						isStatus = InternetStatus.Wifi_Data_Failed;
-					} else {
-						isStatus = InternetStatus.Internet_Unknow;
+			new Thread(new Runnable() {
+				@Override
+				public void run() {
+					synchronized (this) {
+						if (isConnectingToInternet() == false) {
+							switch (isStatus) {
+							case Inter_Success:
+							case None:
+								ToastUiThread(SettingActivity.this, "Inter_Success or None", Toast.LENGTH_LONG);
+								isStatus = InternetStatus.Internet_Failed;
+								break;
+							case Internet_Failed:
+								ToastUiThread(SettingActivity.this, "Internet_Failed", Toast.LENGTH_LONG);
+								if (getConnectType() == ConnectivityManager.TYPE_MOBILE) {
+									isStatus = InternetStatus.Mobile_Data_Failed;
+								} else if (getConnectType() == ConnectivityManager.TYPE_WIFI) {
+									isStatus = InternetStatus.Wifi_Data_Failed;
+								} else {
+									isStatus = InternetStatus.Internet_Unknow;
+								}
+								break;
+							case Internet_Unknow:
+								ToastUiThread(SettingActivity.this, "Internet_Unknow", Toast.LENGTH_LONG);
+								((WifiManager) getSystemService(Context.WIFI_SERVICE)).setWifiEnabled(false);
+								if (getConnectType() != ConnectivityManager.TYPE_MOBILE) {
+									updateAPN(SettingActivity.this, true);
+									isStatus = InternetStatus.None;
+								}
+								break;
+							case Mobile_Data_Failed:
+								ToastUiThread(SettingActivity.this, "Mobile_Data_Failed", Toast.LENGTH_LONG);
+								updateAPN(SettingActivity.this, false);
+								isStatus = InternetStatus.Mobile_Data_Off;
+								break;
+							case Wifi_Data_Failed:
+								ToastUiThread(SettingActivity.this, "Wifi_Data_Failed", Toast.LENGTH_LONG);
+								((WifiManager) getSystemService(Context.WIFI_SERVICE)).setWifiEnabled(false);
+								isStatus = InternetStatus.Wifi_Data_Off;
+								break;
+							case Mobile_Data_Off:
+								ToastUiThread(SettingActivity.this, "Mobile_Data_Off", Toast.LENGTH_LONG);
+								if (getConnectType() != ConnectivityManager.TYPE_MOBILE) {
+									updateAPN(SettingActivity.this, true);
+									isStatus = InternetStatus.None;
+								}
+								break;
+							case Wifi_Data_Off:
+								ToastUiThread(SettingActivity.this, "Wifi_Data_Off", Toast.LENGTH_LONG);
+								if (getConnectType() != ConnectivityManager.TYPE_WIFI) {
+									((WifiManager) getSystemService(Context.WIFI_SERVICE)).setWifiEnabled(true);
+									isStatus = InternetStatus.None;
+								}
+								break;
+							default:
+							}
+						} else {
+							isStatus = InternetStatus.Inter_Success;
+							iLastStatus = getConnectType();
+							ToastUiThread(SettingActivity.this, "Inter_Success", Toast.LENGTH_LONG);
+						}
+						System.gc();
 					}
-					break;
-				case Internet_Unknow:
-					Toast.makeText(this, "Internet_Unknow", Toast.LENGTH_LONG).show();
-					((WifiManager) getSystemService(Context.WIFI_SERVICE)).setWifiEnabled(false);
-					if (getConnectType() != ConnectivityManager.TYPE_MOBILE) {
-						updateAPN(SettingActivity.this, true);
-						isStatus = InternetStatus.None;
-					}
-					break;
-				case Mobile_Data_Failed:
-					Toast.makeText(this, "Mobile_Data_Failed", Toast.LENGTH_LONG).show();
-					updateAPN(SettingActivity.this, false);
-					isStatus = InternetStatus.Mobile_Data_Off;
-					break;
-				case Wifi_Data_Failed:
-					Toast.makeText(this, "Wifi_Data_Failed", Toast.LENGTH_LONG).show();
-					((WifiManager) getSystemService(Context.WIFI_SERVICE)).setWifiEnabled(false);
-					isStatus = InternetStatus.Wifi_Data_Off;
-					break;
-				case Mobile_Data_Off:
-					Toast.makeText(this, "Mobile_Data_Off", Toast.LENGTH_LONG).show();
-					if (getConnectType() != ConnectivityManager.TYPE_MOBILE) {
-						updateAPN(SettingActivity.this, true);
-						isStatus = InternetStatus.None;
-					}
-					break;
-				case Wifi_Data_Off:
-					Toast.makeText(this, "Wifi_Data_Off", Toast.LENGTH_LONG).show();
-					if (getConnectType() != ConnectivityManager.TYPE_WIFI) {
-						((WifiManager) getSystemService(Context.WIFI_SERVICE)).setWifiEnabled(true);
-						isStatus = InternetStatus.None;
-					}
-					break;
-				default:
-
 				}
-
-			} else {
-				isStatus = InternetStatus.Inter_Success;
-				iLastStatus = getConnectType();
-				Toast.makeText(this, "Inter_Success", Toast.LENGTH_LONG).show();
-			}
-
+			}, "KeepConnection_StateMachine_Thread").start();
 		}
 		return true;
 	}
@@ -215,13 +221,18 @@ public class SettingActivity extends PreferenceActivity implements OnPreferenceC
 	}
 
 	boolean isConnectingToInternet() {
-		ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		if (connMgr != null) {
-			NetworkInfo info = connMgr.getActiveNetworkInfo();
-			if (info != null)
-				return (info.isConnected());
+		boolean bRET = false;
+		try {
+			URLConnection connection = new URL("http://www.google.com.tw").openConnection();
+			connection.setConnectTimeout(5 * 1000);
+			if (((HttpURLConnection) connection).getResponseCode() == HttpURLConnection.HTTP_OK) {
+				bRET = true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			bRET = false;
 		}
-		return false;
+		return bRET;
 	}
 
 	int getConnectType() {
