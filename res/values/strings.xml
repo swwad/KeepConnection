@@ -8,14 +8,13 @@
     <string name="scan_sec">檢查網路狀況間隔時間</string>
     <string name="warning_toast">目前網路連線異常，請確認!</string>
     <string name="action_3g_retry_strategy">3G/資料  網路異常策略</string>
-    <string name="action_airplane_retry">以飛航模式切換</string>
-    <string name="action_3g_retry">以 3G/資料 模式切換</string>
     <string name="action_wifi_retry_strategy">Wifi 異常策略</string>
-    <string name="action_wifi_restart">重新開啟 Wifi 連線</string>
-    <string name="action_wifi_to_3g">強制切換至 3G/資料 模式</string>
     <string name="auto_start">開機自動啟動</string>
+    <string name="today_last_connect_count">今日剩餘重新連線次數:</string>
+    <string name="reconnect_last_time">上次恢復連線時間:</string>
+    <string name="upgrade_app">支持本程式，升級捐贈版本後將可取消所有限制!</string>
     <string name="support_me">支持本程式</string>
-    <string name="support_me_hint">您的支持可以幫助小弟開發更多新程式，\n支持本程式後，將可啟動所有功能。\n若您已支持過，也請點此直接升級為捐贈版本!</string>
+    <string name="support_me_hint">您的支持可以幫助小弟開發更多新程式，\n支持本程式後，將可去除廣告及啟動所有功能。\n若您已支持過，也請點此直接升級為捐贈版本!</string>
     <string name="warning_method">提示方式</string>
     <string name="warning_flash">相機閃光燈閃爍</string>
     <string name="warning_screen">螢幕亮起提示</string>
@@ -27,6 +26,22 @@
     <string name="iabhelper_failed">查詢購買資訊失敗，請稍後再試!</string>
     <string name="iabhelper_fullversion">感謝您的支持，將啟用所有功能。</string>
 
+    <string-array name="action_3g_retry_strategy_option_string">
+        <item>關閉->開啟 3G/資料 重新連線</item>
+        <item>開啟->關閉 飛航模式 重新連線</item>
+    </string-array>
+    <string-array name="action_3g_retry_strategy_option_value">
+        <item>action_3g_retry</item>
+        <item>action_airplane_retry</item>
+    </string-array>
+    <string-array name="action_wifi_retry_strategy_option_string">
+        <item>強制切換至 3G/資料 模式</item>
+        <item>關閉->重新開啟 Wifi 連線</item>
+    </string-array>
+    <string-array name="action_wifi_retry_strategy_option_value">
+        <item>action_wifi_to_3g</item>
+        <item>action_wifi_restart</item>
+    </string-array>
     <string-array name="warning_option_string">
         <item>關閉</item>
         <item>5秒</item>
@@ -64,6 +79,7 @@
     <string name="key_action_3g_retry_strategy">key_action_3g_retry_strategy</string>
     <string name="key_action_wifi_retry_strategy">key_action_wifi_retry_strategy</string>
     <string name="key_setting_auto_start">key_setting_auto_start</string>
+    <string name="key_upgrade_app">key_upgrade_app</string>
     <string name="key_setting_support_me">key_setting_support_me</string>
     <string name="key_notify_title">key_notify_title</string>
     <string name="key_notify_screen">key_notify_screen</string>
