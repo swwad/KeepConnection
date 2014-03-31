@@ -79,7 +79,7 @@
     <string name="key_action_3g_retry_strategy">key_action_3g_retry_strategy</string>
     <string name="key_action_wifi_retry_strategy">key_action_wifi_retry_strategy</string>
     <string name="key_setting_auto_start">key_setting_auto_start</string>
-    <string name="key_upgrade_app">key_upgrade_app</string>
+    <string name="key_last_uses_times">key_last_uses_times</string>
     <string name="key_setting_support_me">key_setting_support_me</string>
     <string name="key_notify_title">key_notify_title</string>
     <string name="key_notify_screen">key_notify_screen</string>

@@ -16,13 +16,13 @@
             android:entryValues="@array/action_3g_retry_strategy_option_value"
             android:key="@string/key_action_3g_retry_strategy"
             android:title="@string/action_3g_retry_strategy" />
+        <!--
         <ListPreference
             android:defaultValue="action_wifi_to_3g"
             android:entries="@array/action_wifi_retry_strategy_option_string"
             android:entryValues="@array/action_wifi_retry_strategy_option_value"
             android:key="@string/key_action_wifi_retry_strategy"
-            android:title="@string/action_wifi_retry_strategy" />
-
+            android:title="@string/action_wifi_retry_strategy" />        -->
         <CheckBoxPreference
             android:defaultValue="false"
             android:enabled="false"
@@ -30,7 +30,7 @@
             android:title="@string/auto_start" />
 
         <Preference
-            android:key="@string/key_upgrade_app"
+            android:key="@string/key_last_uses_times"
             android:summary="@string/reconnect_last_time"
             android:title="@string/today_last_connect_count" />
         <Preference
