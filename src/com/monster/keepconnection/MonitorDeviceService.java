@@ -1,9 +1,15 @@
 package com.monster.keepconnection;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Date;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -20,6 +26,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -27,7 +34,6 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
 import android.os.Vibrator;
-import android.widget.Toast;
 
 enum InternetStatus {
 	None, Mobile_Data_Failed, Mobile_Data_Off, AIR_PLANE, Internet_Unknow, Internet_Failed, Internet_Success;
@@ -40,11 +46,12 @@ public class MonitorDeviceService extends Service {
 	Parameters camera_parameters;
 	int iBackCameraID = -1;
 
-	int iRetryCounter = 0;
 	boolean bStopAllWarning = false;
 	boolean bMonitorServiceThread = false;;
 	boolean bInternetStatus = false;
 	InternetStatus isStatus = InternetStatus.None;
+	int iTimeout = 5000;
+	static String LogDir = Environment.getExternalStorageDirectory() + System.getProperty("file.separator") + "KeepConnection_Log";
 
 	@Override
 	public void onCreate() {
@@ -69,7 +76,6 @@ public class MonitorDeviceService extends Service {
 		try {
 			if (getSharedPreferences(getPackageName(), MODE_PRIVATE).getBoolean(getString(R.string.key_setting_auto_start), false) || intent.getBooleanExtra(SettingActivity.StartFromActivity, false)) {
 				bStopAllWarning = false;
-				iRetryCounter = 0;
 				isStatus = InternetStatus.None;
 				showNotification();
 				if (bMonitorServiceThread == false) {
@@ -90,7 +96,9 @@ public class MonitorDeviceService extends Service {
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
-			Toast.makeText(MonitorDeviceService.this, msg.getData().getString("Message"), Toast.LENGTH_LONG).show();
+			AddLog("Log.txt", msg.getData().getString("Message"));
+			// Toast.makeText(MonitorDeviceService.this,
+			// msg.getData().getString("Message"), Toast.LENGTH_LONG).show();
 		}
 	};
 
@@ -107,66 +115,74 @@ public class MonitorDeviceService extends Service {
 		@Override
 		public void run() {
 			while (bMonitorServiceThread) {
-				if (isConnectingToInternet() == false) {
-					switch (isStatus) {
-					case Internet_Success:
-					case None:
-						isStatus = InternetStatus.Internet_Failed;
-						hToastMessage.sendMessage(setStringMessage("Internet_Failed"));
-						break;
-					case Internet_Failed:
-						if (getConnectType() == ConnectivityManager.TYPE_MOBILE) {
-							isStatus = InternetStatus.Mobile_Data_Failed;
-							hToastMessage.sendMessage(setStringMessage("Internet_Failed -> Mobile_Data_Failed"));
-						} else {
-							isStatus = InternetStatus.Internet_Unknow;
-							hToastMessage.sendMessage(setStringMessage("Internet_Failed -> Internet_Unknow"));
-						}
-						break;
-					case Internet_Unknow:
-						((WifiManager) getSystemService(Context.WIFI_SERVICE)).setWifiEnabled(false);
-						isStatus = InternetStatus.Mobile_Data_Failed;
-						hToastMessage.sendMessage(setStringMessage("Internet_Unknow -> Mobile_Data_Failed"));
-						break;
-					case Mobile_Data_Failed:
-						updateAPN(MonitorDeviceService.this, false);
-						isStatus = InternetStatus.Mobile_Data_Off;
-						hToastMessage.sendMessage(setStringMessage("Mobile_Data_Failed -> Mobile_Data_Off"));
-						break;
-//					case Wifi_Data_Failed:
-//						((WifiManager) getSystemService(Context.WIFI_SERVICE)).setWifiEnabled(false);
-//						isStatus = InternetStatus.Wifi_Data_Off;
-//						hToastMessage.sendMessage(setStringMessage("Wifi_Data_Failed -> Wifi_Data_Off"));
-//						break;
-					case Mobile_Data_Off:
-						int iType = getConnectType();
-						if (iType != ConnectivityManager.TYPE_MOBILE) {
-							updateAPN(MonitorDeviceService.this, true);
-							isStatus = InternetStatus.None;
-							hToastMessage.sendMessage(setStringMessage("Mobile_Data_Off  -> InternetStatus_None,\nType is " + String.valueOf(iType)));
-						} else {
-							iRetryCounter++;
-							hToastMessage.sendMessage(setStringMessage("Still Mobile_Data_Off\nNow is ConnectivityManager.TYPE_MOBILE"));
-						}
-						break;
-//					case Wifi_Data_Off:
-//						int iType1 = getConnectType();
-//						if (iType1 != ConnectivityManager.TYPE_WIFI) {
-//							((WifiManager) getSystemService(Context.WIFI_SERVICE)).setWifiEnabled(true);
-//							isStatus = InternetStatus.None;
-//							hToastMessage.sendMessage(setStringMessage("Wifi_Data_Off  -> InternetStatus_None,\nType is " + String.valueOf(iType1)));
-//						} else {
-//							iRetryCounter++;
-//							hToastMessage.sendMessage(setStringMessage("Still Wifi_Data_Off\nNow is ConnectivityManager.TYPE_WIFI"));
-//						}
-//						break;
-					default:
-					}
+
+				if ((getConnectType() == ConnectivityManager.TYPE_WIFI) || (getConnectType() == ConnectivityManager.TYPE_WIMAX)) {
+					// Wifi 不做事
+					hToastMessage.sendMessage(setStringMessage("Wifi do nothing"));
 				} else {
-					iRetryCounter = 0;
-					isStatus = InternetStatus.Internet_Success;
-					String strTmp = "Internet_Success\n";
-					hToastMessage.sendMessage(setStringMessage(strTmp));
+					if (isConnectingToInternet() == false) {
+						warningVibrator(2);
+						switch (isStatus) {
+						case Internet_Success:
+						case None:
+							isStatus = InternetStatus.Internet_Failed;
+							hToastMessage.sendMessage(setStringMessage("Internet_Failed"));
+							break;
+						case Internet_Failed:
+							if (getConnectType() == ConnectivityManager.TYPE_MOBILE) {
+								isStatus = InternetStatus.Mobile_Data_Failed;
+								hToastMessage.sendMessage(setStringMessage("Internet_Failed -> Mobile_Data_Failed"));
+							} else {
+								isStatus = InternetStatus.Internet_Unknow;
+								hToastMessage.sendMessage(setStringMessage("Internet_Failed -> Internet_Unknow"));
+							}
+							break;
+						case Internet_Unknow:
+							((WifiManager) getSystemService(Context.WIFI_SERVICE)).setWifiEnabled(false);
+							isStatus = InternetStatus.Mobile_Data_Failed;
+							hToastMessage.sendMessage(setStringMessage("Internet_Unknow -> Mobile_Data_Failed"));
+							break;
+						case Mobile_Data_Failed:
+							updateAPN(MonitorDeviceService.this, false);
+							isStatus = InternetStatus.Mobile_Data_Off;
+							hToastMessage.sendMessage(setStringMessage("Mobile_Data_Failed -> Mobile_Data_Off"));
+							break;
+						// case Wifi_Data_Failed:
+						// ((WifiManager)
+						// getSystemService(Context.WIFI_SERVICE)).setWifiEnabled(false);
+						// isStatus = InternetStatus.Wifi_Data_Off;
+						// hToastMessage.sendMessage(setStringMessage("Wifi_Data_Failed -> Wifi_Data_Off"));
+						// break;
+						case Mobile_Data_Off:
+							int iType = getConnectType();
+							if (iType != ConnectivityManager.TYPE_MOBILE) {
+								updateAPN(MonitorDeviceService.this, true);
+								isStatus = InternetStatus.None;
+								hToastMessage.sendMessage(setStringMessage("Mobile_Data_Off  -> Turn Off APN [" + String.valueOf(iType) + "]"));
+							} else {
+								hToastMessage.sendMessage(setStringMessage("Still Mobile_Data_Off\nNow is ConnectivityManager.TYPE_MOBILE"));
+							}
+							break;
+						// case Wifi_Data_Off:
+						// int iType1 = getConnectType();
+						// if (iType1 != ConnectivityManager.TYPE_WIFI) {
+						// ((WifiManager)
+						// getSystemService(Context.WIFI_SERVICE)).setWifiEnabled(true);
+						// isStatus = InternetStatus.None;
+						// hToastMessage.sendMessage(setStringMessage("Wifi_Data_Off  -> InternetStatus_None,\nType is "
+						// + String.valueOf(iType1)));
+						// } else {
+						// iRetryCounter++;
+						// hToastMessage.sendMessage(setStringMessage("Still Wifi_Data_Off\nNow is ConnectivityManager.TYPE_WIFI"));
+						// }
+						// break;
+						default:
+						}
+					} else {
+						isStatus = InternetStatus.Internet_Success;
+						String strTmp = "Internet_Success";
+						hToastMessage.sendMessage(setStringMessage(strTmp));
+					}
 				}
 
 				try {
@@ -182,8 +198,6 @@ public class MonitorDeviceService extends Service {
 	boolean isConnectingToInternet() {
 		boolean bRET = false;
 		try {
-			int iTimeout = 5000;
-
 			// switch (isStatus) {
 			// case Internet_Success:
 			// case None:
@@ -331,4 +345,21 @@ public class MonitorDeviceService extends Service {
 	public IBinder onBind(Intent intent) {
 		return null;
 	}
+
+	public static void AddLog(String strFileName, String strLog) {
+		try {
+			if (!new File(LogDir).exists()) {
+				new File(LogDir).mkdirs();
+			}
+			File testWrite = new File(LogDir, strFileName);
+			Writer writer;
+			writer = new BufferedWriter(new FileWriter(testWrite, true));
+			Date now = new Date();
+			writer.write(String.format("%s/%s/%s %02d:%02d:%02d", now.getYear() + 1900, now.getMonth() + 1, now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds()) + " -> " + strLog + "\n");
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 }
