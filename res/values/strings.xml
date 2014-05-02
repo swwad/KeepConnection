@@ -27,7 +27,7 @@
     <string name="iabhelper_fullversion">感謝您的支持，將啟用所有功能。</string>
 
     <string-array name="action_3g_retry_strategy_option_string">
-        <item>以3G網路重新連線</item>
+        <item>3G 網路重新連線</item>
         <item>以飛航模式重新連線</item>
     </string-array>
     <string-array name="action_3g_retry_strategy_option_value">
