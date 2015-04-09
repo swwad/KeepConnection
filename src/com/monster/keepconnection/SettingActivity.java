@@ -22,10 +22,10 @@ public class SettingActivity extends PreferenceActivity implements OnPreferenceC
 	Set<BluetoothDevice> pairedDevices = new HashSet<BluetoothDevice>();
 	public final static String StartFromActivity = "StartFromActivity";
 
-	final static int BuyFullVersionRequestCode = 721010;
-	final static String IABRequestCode = "FullVersionID123456789";
-	final static String IABKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAutzaL2p34g8tkLuySwac0dUT30sR5s61nhI02VITWJSdxZ3y4P6NW1vb8d9a+6dfZYpzYQPkebKVwlvJYFG7xwPeHcqyqCNc5EWa3hPaVbPHfeUrM/AI/pe/Go1LeniZpt27M0A7rUckEDryI+W5Eqp1d9+b0ie3L2aUzKKEKQGa+RDPGfXlVD7zuPuIyZZtgwzu2IDz8SZkBGTYQnbZe4vVetw0o/Vz7g4b3XPeGEYxYlpyj3K5yT93u2T2iUKfdRBHapx3p23xWrA0Ojh+GCBHAn0Jr/X83BqtnPGssrIdUHsZdo5KokQbieqOm6OCfgCulqejbqdGqKsECqj0qQIDAQAB";
-	final static String FullVersionID = "dontleave.full.version";
+	final static int BuyFullVersionRequestCode = 101072;
+	final static String IABRequestCode = "FullVersionID987654321";
+	final static String IABKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjMeAGUaTE6wd+Eln+0FcxZSZ7eo2aqcPLMuQu1J3FSMzPrrn8NskHJayJwTokq8cqy8DP/SsyQ5A87FRz3N0MjOrtO7BXB0JJQsu3/7a3NzphMuDImWCohtU6QcWJIhZGrRT9XCjzFDY46WB6JQGeR280IVOFf2CMECQRsp0ujaB+SbBpZ4Nlkzr2l35G+t8Z4rsJWgrMS0ht8Y7RXH1QaDU2+zHgDxGQVocbmE+U3UdnHKSTAW/yy82VIZJKRQsJhcXBXKisaf8Fig2bA6ryBaDYYZVeIB4QGkI8Ojm5FCRx4POCf6XsIL1GfZg0IPUTpHxYH2bQ5Xvwhq4pBRzrQIDAQAB";
+	final static String FullVersionID = "keep.connection.full.version";
 
 	IabHelper mHelper;
 

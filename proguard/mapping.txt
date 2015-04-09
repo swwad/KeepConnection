@@ -1,465 +1,55 @@
-com.android.vending.billing.IInAppBillingService -> com.a.a.a.a:
-    int isBillingSupported(int,java.lang.String,java.lang.String) -> a
-    android.os.Bundle getSkuDetails(int,java.lang.String,java.lang.String,android.os.Bundle) -> a
-    android.os.Bundle getBuyIntent(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String) -> a
-    android.os.Bundle getPurchases(int,java.lang.String,java.lang.String,java.lang.String) -> a
-    int consumePurchase(int,java.lang.String,java.lang.String) -> b
-com.android.vending.billing.IInAppBillingService$Stub -> com.a.a.a.b:
-    com.android.vending.billing.IInAppBillingService asInterface(android.os.IBinder) -> a
-    boolean onTransact(int,android.os.Parcel,android.os.Parcel,int) -> onTransact
-com.android.vending.billing.IInAppBillingService$Stub$Proxy -> com.a.a.a.c:
-    android.os.IBinder mRemote -> a
-    android.os.IBinder asBinder() -> asBinder
-    int isBillingSupported(int,java.lang.String,java.lang.String) -> a
-    android.os.Bundle getSkuDetails(int,java.lang.String,java.lang.String,android.os.Bundle) -> a
-    android.os.Bundle getBuyIntent(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String) -> a
-    android.os.Bundle getPurchases(int,java.lang.String,java.lang.String,java.lang.String) -> a
-    int consumePurchase(int,java.lang.String,java.lang.String) -> b
-com.monster.dontleave.BootReceiver -> com.monster.dontleave.BootReceiver:
+com.monster.keepconnection.BootReceiver -> com.monster.keepconnection.BootReceiver:
     void onReceive(android.content.Context,android.content.Intent) -> onReceive
-com.monster.dontleave.MonitorDeviceService -> com.monster.dontleave.MonitorDeviceService:
+com.monster.keepconnection.InternetStatus -> com.monster.keepconnection.a:
+    com.monster.keepconnection.InternetStatus None -> a
+    com.monster.keepconnection.InternetStatus Mobile_Data_Failed -> b
+    com.monster.keepconnection.InternetStatus Mobile_Data_Off -> c
+    com.monster.keepconnection.InternetStatus AIR_PLANE -> d
+    com.monster.keepconnection.InternetStatus Internet_Unknow -> e
+    com.monster.keepconnection.InternetStatus Internet_Failed -> f
+    com.monster.keepconnection.InternetStatus Internet_Success -> g
+    com.monster.keepconnection.InternetStatus[] ENUM$VALUES -> h
+    com.monster.keepconnection.InternetStatus[] values() -> a
+com.monster.keepconnection.MonitorDeviceService -> com.monster.keepconnection.MonitorDeviceService:
     android.app.NotificationManager mNM -> e
-    android.hardware.Camera camera -> a
-    android.hardware.Camera$Parameters camera_parameters -> b
-    int iBackCameraID -> c
-    boolean bStopAllWarning -> d
-    android.content.BroadcastReceiver brReceiver -> f
+    boolean bStopAllWarning -> a
+    boolean bMonitorServiceThread -> b
+    com.monster.keepconnection.InternetStatus isStatus -> c
+    int iTimeout -> f
+    java.lang.String LogDir -> g
+    android.os.Handler hToastMessage -> d
+    java.lang.Thread thStateMachine -> h
     void onCreate() -> onCreate
-    int onStartCommand(android.content.Intent,int,int) -> onStartCommand
     void onDestroy() -> onDestroy
-    void warningDialog() -> a
+    int onStartCommand(android.content.Intent,int,int) -> onStartCommand
+    android.os.Message setStringMessage(java.lang.String) -> a
+    boolean isConnectingToInternet() -> a
+    void updateAPN(android.content.Context,boolean) -> a
+    int getConnectType() -> b
     void warningVibrator(int) -> a
-    void warningScreen() -> b
-    void warningFlash(int) -> b
-    void warningAudio(int) -> c
     android.os.IBinder onBind(android.content.Intent) -> onBind
-com.monster.dontleave.MonitorDeviceService$1 -> com.monster.dontleave.a:
-    com.monster.dontleave.MonitorDeviceService this$0 -> a
-    void onReceive(android.content.Context,android.content.Intent) -> onReceive
-com.monster.dontleave.MonitorDeviceService$2 -> com.monster.dontleave.b:
-    com.monster.dontleave.MonitorDeviceService this$0 -> a
-    void onClick(android.content.DialogInterface,int) -> onClick
-com.monster.dontleave.MonitorDeviceService$3 -> com.monster.dontleave.c:
-    com.monster.dontleave.MonitorDeviceService this$0 -> a
+    void AddLog(java.lang.String,java.lang.String) -> a
+com.monster.keepconnection.MonitorDeviceService$1 -> com.monster.keepconnection.b:
+    void handleMessage(android.os.Message) -> handleMessage
+com.monster.keepconnection.MonitorDeviceService$2 -> com.monster.keepconnection.c:
+    com.monster.keepconnection.MonitorDeviceService this$0 -> a
+    int[] $SWITCH_TABLE$com$monster$keepconnection$InternetStatus -> b
+    void run() -> run
+    int[] $SWITCH_TABLE$com$monster$keepconnection$InternetStatus() -> a
+com.monster.keepconnection.MonitorDeviceService$3 -> com.monster.keepconnection.d:
+    com.monster.keepconnection.MonitorDeviceService this$0 -> a
     int val$iSec -> b
     void run() -> run
-com.monster.dontleave.MonitorDeviceService$4 -> com.monster.dontleave.d:
-    com.monster.dontleave.MonitorDeviceService this$0 -> a
-    void run() -> run
-com.monster.dontleave.MonitorDeviceService$5 -> com.monster.dontleave.e:
-    com.monster.dontleave.MonitorDeviceService this$0 -> a
-    int val$iSec -> b
-    void run() -> run
-com.monster.dontleave.MonitorDeviceService$6 -> com.monster.dontleave.f:
-    com.monster.dontleave.MonitorDeviceService this$0 -> a
-    int val$iSec -> b
-    android.media.MediaPlayer val$playerSound -> c
-    void run() -> run
-com.monster.dontleave.SettingActivity -> com.monster.dontleave.SettingActivity:
-    java.util.Set pairedDevices -> a
-    com.util.IabHelper mHelper -> b
-    android.os.Handler hCheckBtDeviceStatus -> c
-    android.os.Handler hSetupDefaultData -> d
+com.monster.keepconnection.SettingActivity -> com.monster.keepconnection.SettingActivity:
+    com.util.IabHelper mHelper -> a
+    android.os.Handler hSetupDefaultData -> b
     void onCreate(android.os.Bundle) -> onCreate
     void onResume() -> onResume
     void SetDefaultData() -> a
     boolean onPreferenceChange(android.preference.Preference,java.lang.Object) -> onPreferenceChange
     boolean onPreferenceClick(android.preference.Preference) -> onPreferenceClick
-    void ToastUiThread(android.content.Context,java.lang.String,int) -> a
-    void releaseIabHelper() -> b
     void onDestroy() -> onDestroy
-    void reStartService() -> c
-    void access$0(com.monster.dontleave.SettingActivity) -> a
-com.monster.dontleave.SettingActivity$1 -> com.monster.dontleave.g:
-    com.monster.dontleave.SettingActivity this$0 -> a
+com.monster.keepconnection.SettingActivity$1 -> com.monster.keepconnection.e:
+    com.monster.keepconnection.SettingActivity this$0 -> a
     void handleMessage(android.os.Message) -> handleMessage
-com.monster.dontleave.SettingActivity$2 -> com.monster.dontleave.h:
-    com.monster.dontleave.SettingActivity this$0 -> a
-    void handleMessage(android.os.Message) -> handleMessage
-com.monster.dontleave.SettingActivity$3 -> com.monster.dontleave.i:
-    com.monster.dontleave.SettingActivity this$0 -> a
-    void didShowAd() -> a
-    void didFailToShowAd(com.purplebrain.adbuddiz.sdk.AdBuddizError) -> a
-    void didClick() -> b
-    void didHideAd() -> c
-com.monster.dontleave.SettingActivity$4 -> com.monster.dontleave.j:
-    com.monster.dontleave.SettingActivity this$0 -> a
-    void onIabSetupFinished(com.util.IabResult) -> a
-com.monster.dontleave.SettingActivity$4$1 -> com.monster.dontleave.k:
-    com.monster.dontleave.SettingActivity$4 this$1 -> a
-    void onQueryInventoryFinished(com.util.IabResult,com.util.Inventory) -> a
-com.monster.dontleave.SettingActivity$5 -> com.monster.dontleave.l:
-    com.monster.dontleave.SettingActivity this$0 -> a
-    void onIabSetupFinished(com.util.IabResult) -> a
-com.monster.dontleave.SettingActivity$5$1 -> com.monster.dontleave.m:
-    com.monster.dontleave.SettingActivity$5 this$1 -> a
-    void onIabPurchaseFinished(com.util.IabResult,com.util.Purchase) -> a
-com.monster.dontleave.SettingActivity$6 -> com.monster.dontleave.n:
-    android.content.Context val$context -> a
-    java.lang.String val$strMessage -> b
-    int val$duration -> c
-    void run() -> run
-com.purplebrain.adbuddiz.sdk.AdBuddiz -> com.purplebrain.adbuddiz.sdk.a:
-    com.purplebrain.adbuddiz.sdk.AdBuddiz a -> a
-    android.app.Activity b -> b
-    com.purplebrain.adbuddiz.sdk.AdBuddizDelegate c -> c
-    com.purplebrain.adbuddiz.sdk.AdBuddiz a() -> f
-    void cacheAds(android.app.Activity) -> a
-    void a(android.app.Activity) -> c
-    void showAd(android.app.Activity) -> b
-    void b(android.app.Activity,java.lang.String) -> a
-    void onDestroy() -> a
-    android.content.Context getContext() -> b
-    com.purplebrain.adbuddiz.sdk.AdBuddizDelegate getDelegate() -> c
-    void setDelegate(com.purplebrain.adbuddiz.sdk.AdBuddizDelegate) -> a
-    void a(boolean,com.purplebrain.adbuddiz.sdk.AdBuddizError) -> a
-    void a(com.purplebrain.adbuddiz.sdk.AdBuddizError,java.lang.String) -> a
-    java.lang.String getVersion() -> d
-    java.lang.String getType() -> e
-com.purplebrain.adbuddiz.sdk.AdBuddizActivity -> com.purplebrain.adbuddiz.sdk.AdBuddizActivity:
-    android.view.View a -> a
-    boolean b -> b
-    void onCreate(android.os.Bundle) -> onCreate
-    void onBackPressed() -> onBackPressed
-    void onDestroy() -> onDestroy
-    void a(android.view.View) -> a
-com.purplebrain.adbuddiz.sdk.AdBuddizDelegate -> com.purplebrain.adbuddiz.sdk.b:
-    void didShowAd() -> a
-    void didFailToShowAd(com.purplebrain.adbuddiz.sdk.AdBuddizError) -> a
-    void didClick() -> b
-    void didHideAd() -> c
-com.purplebrain.adbuddiz.sdk.AdBuddizError -> com.purplebrain.adbuddiz.sdk.c:
-    com.purplebrain.adbuddiz.sdk.AdBuddizError UNSUPPORTED_ANDROID_SDK -> a
-    com.purplebrain.adbuddiz.sdk.AdBuddizError ACTIVITY_PARAMETER_IS_NULL -> b
-    com.purplebrain.adbuddiz.sdk.AdBuddizError MISSING_INTERNET_PERMISSION_IN_MANIFEST -> c
-    com.purplebrain.adbuddiz.sdk.AdBuddizError MISSING_PUBLISHER_KEY_IN_MANIFEST -> d
-    com.purplebrain.adbuddiz.sdk.AdBuddizError MISSING_ADBUDDIZ_ACTIVITY_IN_MANIFEST -> e
-    com.purplebrain.adbuddiz.sdk.AdBuddizError CONFIG_NOT_READY -> f
-    com.purplebrain.adbuddiz.sdk.AdBuddizError CONFIG_EXPIRED -> g
-    com.purplebrain.adbuddiz.sdk.AdBuddizError INVALID_PUBLISHER_KEY -> h
-    com.purplebrain.adbuddiz.sdk.AdBuddizError PLACEMENT_BLOCKED -> i
-    com.purplebrain.adbuddiz.sdk.AdBuddizError NO_NETWORK_AVAILABLE -> j
-    com.purplebrain.adbuddiz.sdk.AdBuddizError NO_MORE_AVAILABLE_CACHED_ADS -> k
-    com.purplebrain.adbuddiz.sdk.AdBuddizError NO_MORE_AVAILABLE_ADS -> l
-    com.purplebrain.adbuddiz.sdk.AdBuddizError SHOW_AD_CALLS_TOO_CLOSE -> m
-    com.purplebrain.adbuddiz.sdk.AdBuddizError UNKNOWN_EXCEPTION_RAISED -> n
-    com.purplebrain.adbuddiz.sdk.AdBuddizError[] $VALUES -> o
-    com.purplebrain.adbuddiz.sdk.AdBuddizError[] values() -> a
-com.purplebrain.adbuddiz.sdk.a -> com.purplebrain.adbuddiz.sdk.d:
-    com.purplebrain.adbuddiz.sdk.util.device.a a$6cf737f2 -> a
-    java.lang.String b -> b
-    java.lang.Void a$10299ca() -> a
-    java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
-com.purplebrain.adbuddiz.sdk.a.a -> com.purplebrain.adbuddiz.sdk.a.a:
-    java.util.concurrent.ExecutorService a -> a
-    java.util.concurrent.ExecutorService b -> b
-    int c -> c
-    void a() -> a
-    boolean b() -> b
-    java.lang.String c() -> c
-    void d() -> d
-    void run() -> run
-    java.net.HttpURLConnection a(java.net.URL,java.lang.String) -> c
-    java.net.HttpURLConnection a(java.net.URL) -> a
-    java.net.HttpURLConnection b(java.net.URL,java.lang.String) -> a
-    java.net.HttpURLConnection c(java.net.URL,java.lang.String) -> b
-    void a(java.net.HttpURLConnection,java.lang.String) -> a
-    java.lang.String a(java.net.HttpURLConnection) -> a
-com.purplebrain.adbuddiz.sdk.a.b -> com.purplebrain.adbuddiz.sdk.a.b:
-    com.purplebrain.adbuddiz.sdk.util.device.a a$6cf737f2 -> a
-    java.lang.String b -> b
-    void a() -> a
-    boolean b() -> b
-    java.lang.String c() -> c
-    void a$130245fd(com.purplebrain.adbuddiz.sdk.util.device.a) -> a
-    void a(java.lang.String) -> a
-com.purplebrain.adbuddiz.sdk.a.c -> com.purplebrain.adbuddiz.sdk.a.c:
-    com.purplebrain.adbuddiz.sdk.util.device.a a$6cf737f2 -> a
-    java.lang.String b -> b
-    void a() -> a
-    boolean b() -> b
-    java.lang.String c() -> c
-    void a$130245fd(com.purplebrain.adbuddiz.sdk.util.device.a) -> a
-    void a(java.lang.String) -> a
-com.purplebrain.adbuddiz.sdk.a.d -> com.purplebrain.adbuddiz.sdk.a.d:
-    com.purplebrain.adbuddiz.sdk.util.device.a a$6cf737f2 -> a
-    com.purplebrain.adbuddiz.sdk.model.ABOrientation b -> b
-    void a() -> a
-    boolean b() -> b
-    java.lang.String c() -> c
-    void a$130245fd(com.purplebrain.adbuddiz.sdk.util.device.a) -> a
-    void a(com.purplebrain.adbuddiz.sdk.model.ABOrientation) -> a
-com.purplebrain.adbuddiz.sdk.a.e -> com.purplebrain.adbuddiz.sdk.a.e:
-    com.purplebrain.adbuddiz.sdk.a.f a -> a
-    void a() -> a
-    boolean b() -> b
-    java.lang.String c() -> c
-    void a(com.purplebrain.adbuddiz.sdk.a.f) -> a
-com.purplebrain.adbuddiz.sdk.a.f -> com.purplebrain.adbuddiz.sdk.a.f:
-    void a(int) -> a
-    void a(java.lang.String) -> a
-com.purplebrain.adbuddiz.sdk.a.g -> com.purplebrain.adbuddiz.sdk.a.g:
-com.purplebrain.adbuddiz.sdk.b -> com.purplebrain.adbuddiz.sdk.e:
-    int[] a -> a
-com.purplebrain.adbuddiz.sdk.model.ABOrientation -> com.purplebrain.adbuddiz.sdk.b.a:
-    com.purplebrain.adbuddiz.sdk.model.ABOrientation PORT -> a
-    com.purplebrain.adbuddiz.sdk.model.ABOrientation LAND -> b
-    com.purplebrain.adbuddiz.sdk.model.ABOrientation BOTH -> c
-    com.purplebrain.adbuddiz.sdk.model.ABOrientation valueOf(java.lang.String) -> a
-    com.purplebrain.adbuddiz.sdk.model.ABOrientation otherOrientation(com.purplebrain.adbuddiz.sdk.model.ABOrientation) -> a
-com.purplebrain.adbuddiz.sdk.util.a -> com.purplebrain.adbuddiz.sdk.c.a:
-    java.lang.Long a -> a
-    java.lang.Long b -> b
-    android.widget.RelativeLayout c -> c
-    android.view.View a$1b0ec4df(android.app.Activity,com.purplebrain.adbuddiz.sdk.util.device.a,java.lang.String) -> a
-    void a(android.app.Activity) -> a
-    void a() -> a
-    boolean b() -> b
-    boolean c() -> c
-    void a(android.app.Activity,java.lang.String) -> a
-    android.widget.RelativeLayout a(android.widget.RelativeLayout) -> a
-    void b(android.app.Activity) -> b
-com.purplebrain.adbuddiz.sdk.util.b -> com.purplebrain.adbuddiz.sdk.c.b:
-    boolean a -> a
-    com.purplebrain.adbuddiz.sdk.util.device.a b$6cf737f2 -> b
-    java.lang.String c -> c
-    android.app.Activity d -> d
-    void onClick(android.view.View) -> onClick
-com.purplebrain.adbuddiz.sdk.util.c -> com.purplebrain.adbuddiz.sdk.c.c:
-    android.widget.Button a -> a
-    android.app.Activity b -> b
-    void onClick(android.view.View) -> onClick
-com.purplebrain.adbuddiz.sdk.util.d -> com.purplebrain.adbuddiz.sdk.c.d:
-    android.app.Activity a -> a
-    void onAnimationStart(android.view.animation.Animation) -> onAnimationStart
-    void onAnimationRepeat(android.view.animation.Animation) -> onAnimationRepeat
-    void onAnimationEnd(android.view.animation.Animation) -> onAnimationEnd
-com.purplebrain.adbuddiz.sdk.util.device.ABScreenHelper$AssetType -> com.purplebrain.adbuddiz.sdk.c.a.a:
-    com.purplebrain.adbuddiz.sdk.util.device.ABScreenHelper$AssetType PHONE -> a
-    com.purplebrain.adbuddiz.sdk.util.device.ABScreenHelper$AssetType TABLET -> b
-    java.lang.String code -> c
-    java.lang.String getCode() -> a
-com.purplebrain.adbuddiz.sdk.util.device.a -> com.purplebrain.adbuddiz.sdk.c.a.b:
-    long a -> a
-    long b -> b
-    boolean c -> c
-    java.lang.String d -> d
-    java.lang.String e -> e
-    com.purplebrain.adbuddiz.sdk.model.ABOrientation f -> f
-    boolean a() -> a
-    int b() -> b
-    org.json.JSONObject a$7c999a50(com.purplebrain.adbuddiz.sdk.util.e) -> a
-    com.purplebrain.adbuddiz.sdk.util.e a$36e0b906(org.json.JSONObject) -> a
-    float a(android.content.Context) -> a
-    boolean b(android.content.Context) -> b
-    java.lang.Boolean b(android.content.Context) -> c
-    java.lang.String a(android.content.Context) -> d
-    com.purplebrain.adbuddiz.sdk.model.ABOrientation a() -> c
-    boolean a(android.content.Context,java.lang.String) -> a
-    int a(android.content.Context,int) -> a
-    java.util.Date a() -> d
-    java.lang.String a(java.lang.String,java.lang.String) -> a
-    java.lang.String a(byte[]) -> a
-    java.lang.String a(java.io.InputStream) -> a
-    java.lang.String a$380a560d(java.lang.String,com.purplebrain.adbuddiz.sdk.util.device.a,com.purplebrain.adbuddiz.sdk.model.ABOrientation) -> a
-    java.lang.String a(android.content.Context,java.lang.String) -> b
-    java.lang.String a(java.lang.String,java.lang.String,java.lang.String) -> a
-    java.security.PublicKey generatePublicKey(java.lang.String) -> a
-    boolean verify(java.security.PublicKey,java.lang.String,java.lang.String) -> a
-com.purplebrain.adbuddiz.sdk.util.device.b -> com.purplebrain.adbuddiz.sdk.c.a.c:
-    com.purplebrain.adbuddiz.sdk.util.device.b a$51a84d2f -> a
-    com.purplebrain.adbuddiz.sdk.util.e b$6cf737d3 -> b
-    java.lang.Integer c -> c
-    int a() -> a
-    java.lang.String a(android.content.Context) -> a
-    com.purplebrain.adbuddiz.sdk.util.device.b a$500a04ce() -> b
-    com.purplebrain.adbuddiz.sdk.util.e b$60de046e() -> c
-    com.purplebrain.adbuddiz.sdk.AdBuddizError c() -> d
-    boolean b(java.lang.String) -> b
-    void d() -> e
-    void e() -> f
-    boolean f() -> g
-    void g() -> h
-    void a(int) -> a
-    void a(java.lang.String) -> a
-    void c(java.lang.String) -> c
-com.purplebrain.adbuddiz.sdk.util.device.i -> com.purplebrain.adbuddiz.sdk.c.a.d:
-    int a -> a
-    int b -> b
-    java.lang.String a(android.content.Context) -> a
-    int b(android.content.Context) -> b
-    boolean c(android.content.Context) -> c
-    boolean a(android.content.Context,java.lang.String) -> a
-    int a() -> a
-    int b() -> b
-    int c() -> c
-    int d() -> d
-com.purplebrain.adbuddiz.sdk.util.e -> com.purplebrain.adbuddiz.sdk.c.e:
-    long a -> a
-    long b -> b
-    long c -> c
-    int d -> d
-    double e -> e
-    long f -> f
-    java.lang.String g -> g
-    java.util.List h -> h
-    java.util.List i -> i
-    java.util.List j -> j
-    int k -> k
-    int l -> l
-    int m -> m
-    int n -> n
-    int o -> o
-    com.purplebrain.adbuddiz.sdk.util.device.a a$142145eb(long) -> a
-    com.purplebrain.adbuddiz.sdk.util.device.a a$60de044f() -> a
-    com.purplebrain.adbuddiz.sdk.util.device.a a$5f7b61ca(int,com.purplebrain.adbuddiz.sdk.model.ABOrientation) -> a
-    void a(java.util.List) -> a
-    void a(java.util.List,com.purplebrain.adbuddiz.sdk.model.ABOrientation) -> a
-    void a(java.util.List,java.util.List) -> a
-    java.util.List a(int) -> a
-    void a(java.lang.String) -> a
-    boolean a(java.util.List) -> b
-    void a() -> b
-    com.purplebrain.adbuddiz.sdk.util.e b$60de046e() -> c
-    boolean a(java.lang.Long) -> a
-    boolean c() -> d
-    boolean d() -> e
-    java.lang.String a(android.content.Context) -> a
-    java.lang.String b(android.content.Context) -> b
-    java.lang.String c(android.content.Context) -> c
-com.purplebrain.adbuddiz.sdk.util.f -> com.purplebrain.adbuddiz.sdk.c.f:
-    java.util.List a -> a
-    int compare(java.lang.Object,java.lang.Object) -> compare
-com.purplebrain.adbuddiz.sdk.util.h -> com.purplebrain.adbuddiz.sdk.c.g:
-    java.util.Set a -> a
-    void a() -> a
-    boolean a$18136e45(android.content.Context,com.purplebrain.adbuddiz.sdk.util.device.a,com.purplebrain.adbuddiz.sdk.model.ABOrientation) -> a
-    void a$6af1c5c3(com.purplebrain.adbuddiz.sdk.util.device.a,com.purplebrain.adbuddiz.sdk.model.ABOrientation) -> a
-    void b() -> b
-    void b(java.lang.String) -> a
-com.purplebrain.adbuddiz.sdk.util.i -> com.purplebrain.adbuddiz.sdk.c.h:
-    java.lang.String a -> a
-    android.graphics.Bitmap a() -> a
-com.purplebrain.adbuddiz.sdk.util.j -> com.purplebrain.adbuddiz.sdk.c.i:
-    char[] a -> a
-    byte[] b -> b
-    byte[] a(char[]) -> a
-    byte[] a(java.lang.String) -> c
-    java.lang.String b(java.lang.String) -> a
-    char[] a(byte[]) -> a
-    java.lang.String c(java.lang.String) -> b
-com.purplebrain.adbuddiz.sdk.util.m -> com.purplebrain.adbuddiz.sdk.c.j:
-    void a$762c63ce(android.content.Context,java.io.InputStream,com.purplebrain.adbuddiz.sdk.util.device.a,com.purplebrain.adbuddiz.sdk.model.ABOrientation) -> a
-    java.lang.String a$375f2c3(com.purplebrain.adbuddiz.sdk.util.device.a,com.purplebrain.adbuddiz.sdk.model.ABOrientation) -> b
-    java.lang.String b$375f2c3(com.purplebrain.adbuddiz.sdk.util.device.a,com.purplebrain.adbuddiz.sdk.model.ABOrientation) -> a
-    java.lang.String a(android.content.Context) -> a
-    android.graphics.Bitmap a$2ea6c621(android.content.Context,com.purplebrain.adbuddiz.sdk.util.device.a) -> a
-com.purplebrain.adbuddiz.sdk.util.o -> com.purplebrain.adbuddiz.sdk.c.k:
-    java.lang.Boolean a -> a
-    void a(android.content.Context,java.lang.String) -> a
-    void b(android.content.Context,java.lang.String) -> b
-    void c(android.content.Context,java.lang.String) -> c
-    void a(java.lang.String) -> a
-    void a(java.lang.String,java.lang.Throwable) -> a
-    boolean a(android.content.Context) -> a
-    boolean b(android.content.Context) -> b
-com.purplebrain.adbuddiz.sdk.util.p -> com.purplebrain.adbuddiz.sdk.c.l:
-    java.util.Date a -> a
-    java.util.Map b -> b
-    void a$130245fd(com.purplebrain.adbuddiz.sdk.util.device.a) -> a
-    void a(android.content.SharedPreferences$Editor,java.lang.String,int) -> a
-    int b$1302460a(com.purplebrain.adbuddiz.sdk.util.device.a) -> b
-    int c$1302460a(com.purplebrain.adbuddiz.sdk.util.device.a) -> c
-    int a() -> a
-    int b() -> b
-    void c() -> c
-    int d() -> d
-    int e() -> e
-    void h() -> h
-    void j() -> i
-    int a$3e878900(com.purplebrain.adbuddiz.sdk.util.device.a,java.lang.String) -> a
-    int a(java.lang.String) -> a
-    boolean f() -> f
-    boolean g() -> g
-com.util.Base64 -> com.b.a:
-    byte[] DECODABET -> a
-    int decode4to3(byte[],int,byte[],int,byte[]) -> a
-    byte[] decode(java.lang.String) -> a
-com.util.Base64DecoderException -> com.b.b:
-com.util.IabException -> com.b.c:
-    com.util.IabResult mResult -> a
-    com.util.IabResult getResult() -> a
-com.util.IabHelper -> com.b.d:
-    boolean mDebugLog -> f
-    java.lang.String mDebugTag -> g
-    boolean mSetupDone -> a
-    boolean mDisposed -> b
-    boolean mSubscriptionsSupported -> c
-    boolean mAsyncInProgress -> h
-    java.lang.String mAsyncOperation -> i
-    android.content.Context mContext -> d
-    com.android.vending.billing.IInAppBillingService mService -> e
-    android.content.ServiceConnection mServiceConn -> j
-    java.lang.String mSignatureBase64 -> k
-    void startSetup(com.util.IabHelper$OnIabSetupFinishedListener) -> a
-    void dispose() -> a
-    void checkNotDisposed() -> c
-    void launchPurchaseFlow(android.app.Activity,java.lang.String,java.lang.String,int,com.util.IabHelper$OnIabPurchaseFinishedListener,java.lang.String) -> a
-    com.util.Inventory queryInventory$493abee7(boolean,java.util.List) -> a
-    void queryInventoryAsync(boolean,java.util.List,com.util.IabHelper$QueryInventoryFinishedListener) -> a
-    java.lang.String getResponseDesc(int) -> a
-    void checkSetupDone(java.lang.String) -> a
-    int getResponseCodeFromBundle(android.os.Bundle) -> a
-    void flagStartAsync(java.lang.String) -> b
-    void flagEndAsync() -> b
-    int queryPurchases(com.util.Inventory,java.lang.String) -> a
-    int querySkuDetails(java.lang.String,com.util.Inventory,java.util.List) -> a
-    void logError(java.lang.String) -> c
-    void logWarn(java.lang.String) -> d
-com.util.IabHelper$1 -> com.b.e:
-    com.util.IabHelper this$0 -> a
-    com.util.IabHelper$OnIabSetupFinishedListener val$listener -> b
-    void onServiceDisconnected(android.content.ComponentName) -> onServiceDisconnected
-    void onServiceConnected(android.content.ComponentName,android.os.IBinder) -> onServiceConnected
-com.util.IabHelper$2 -> com.b.f:
-    com.util.IabHelper this$0 -> a
-    boolean val$querySkuDetails -> b
-    java.util.List val$moreSkus -> c
-    com.util.IabHelper$QueryInventoryFinishedListener val$listener -> d
-    android.os.Handler val$handler -> e
-    void run() -> run
-com.util.IabHelper$2$1 -> com.b.g:
-    com.util.IabHelper$QueryInventoryFinishedListener val$listener -> a
-    com.util.IabResult val$result_f -> b
-    com.util.Inventory val$inv_f -> c
-    void run() -> run
-com.util.IabHelper$OnIabPurchaseFinishedListener -> com.b.h:
-    void onIabPurchaseFinished(com.util.IabResult,com.util.Purchase) -> a
-com.util.IabHelper$OnIabSetupFinishedListener -> com.b.i:
-    void onIabSetupFinished(com.util.IabResult) -> a
-com.util.IabHelper$QueryInventoryFinishedListener -> com.b.j:
-    void onQueryInventoryFinished(com.util.IabResult,com.util.Inventory) -> a
-com.util.IabResult -> com.b.k:
-    int mResponse -> b
-    java.lang.String mMessage -> a
-    int getResponse() -> a
-    java.lang.String getMessage() -> b
-    boolean isSuccess() -> c
-    boolean isFailure() -> d
-    java.lang.String toString() -> toString
-com.util.Inventory -> com.b.l:
-    java.util.Map mSkuMap -> a
-    java.util.Map mPurchaseMap -> b
-    com.util.Purchase getPurchase(java.lang.String) -> a
-    java.util.List getAllOwnedSkus(java.lang.String) -> b
-com.util.Purchase -> com.b.m:
-    java.lang.String mItemType -> a
-    java.lang.String mSku -> b
-    java.lang.String mToken -> c
-    java.lang.String mOriginalJson -> d
-    java.lang.String getSku() -> a
-    java.lang.String toString() -> toString
-com.util.SkuDetails -> com.b.n:
-    java.lang.String mSku -> a
-    java.lang.String mJson -> b
-    java.lang.String toString() -> toString
+com.util.IabHelper -> com.a.a:

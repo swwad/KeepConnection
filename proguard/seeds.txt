@@ -1,8 +1,6 @@
-com.monster.dontleave.BootReceiver
-com.monster.dontleave.BootReceiver: BootReceiver()
-com.monster.dontleave.MonitorDeviceService
-com.monster.dontleave.MonitorDeviceService: MonitorDeviceService()
-com.monster.dontleave.SettingActivity
-com.monster.dontleave.SettingActivity: SettingActivity()
-com.purplebrain.adbuddiz.sdk.AdBuddizActivity
-com.purplebrain.adbuddiz.sdk.AdBuddizActivity: AdBuddizActivity()
+com.monster.keepconnection.BootReceiver
+com.monster.keepconnection.BootReceiver: BootReceiver()
+com.monster.keepconnection.MonitorDeviceService
+com.monster.keepconnection.MonitorDeviceService: MonitorDeviceService()
+com.monster.keepconnection.SettingActivity
+com.monster.keepconnection.SettingActivity: SettingActivity()

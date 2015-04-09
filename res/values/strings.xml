@@ -7,7 +7,7 @@
     <string name="setting">設定</string>
     <string name="scan_sec">檢查網路間隔時間</string>
     <string name="warning_toast">目前網路連線異常，請確認!</string>
-    <string name="action_3g_retry_strategy">3G網路錯誤處理方式</string>
+    <string name="action_3g_retry_strategy">行動網路錯誤處理方式</string>
     <string name="action_wifi_retry_strategy">Wifi錯誤處理方式</string>
     <string name="auto_start">開機自動啟動</string>
     <string name="today_last_connect_count">今日剩餘重新連線次數:</string>
@@ -35,7 +35,7 @@
         <item>action_airplane_retry</item>
     </string-array>
     <string-array name="action_wifi_retry_strategy_option_string">
-        <item>強制切換至3G網路連線</item>
+        <item>強制切換至行動網路連線</item>
         <item>以Wifi重新連線</item>
     </string-array>
     <string-array name="action_wifi_retry_strategy_option_value">

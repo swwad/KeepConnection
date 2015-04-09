@@ -502,66 +502,55 @@ android.support.v4.widget.ViewDragHelper
 android.support.v4.widget.ViewDragHelper$1
 android.support.v4.widget.ViewDragHelper$2
 android.support.v4.widget.ViewDragHelper$Callback
-com.android.vending.billing.IInAppBillingService$Stub:
-    private static final java.lang.String DESCRIPTOR
-    static final int TRANSACTION_isBillingSupported
-    static final int TRANSACTION_getSkuDetails
-    static final int TRANSACTION_getBuyIntent
-    static final int TRANSACTION_getPurchases
-    static final int TRANSACTION_consumePurchase
-    37:40:public IInAppBillingService$Stub()
-    58:58:public android.os.IBinder asBinder()
-com.android.vending.billing.IInAppBillingService$Stub$Proxy:
-    186:186:public java.lang.String getInterfaceDescriptor()
-com.monster.dontleave.BuildConfig
-com.monster.dontleave.R
-com.monster.dontleave.R$array
-com.monster.dontleave.R$attr
-com.monster.dontleave.R$dimen
-com.monster.dontleave.R$drawable
-com.monster.dontleave.R$id
-com.monster.dontleave.R$layout
-com.monster.dontleave.R$raw
-com.monster.dontleave.R$string
-com.monster.dontleave.R$style
-com.monster.dontleave.R$xml
-com.monster.dontleave.SettingActivity:
+com.android.vending.billing.IInAppBillingService:
+    public abstract int isBillingSupported(int,java.lang.String,java.lang.String)
+    public abstract android.os.Bundle getSkuDetails(int,java.lang.String,java.lang.String,android.os.Bundle)
+    public abstract android.os.Bundle getBuyIntent(int,java.lang.String,java.lang.String,java.lang.String,java.lang.String)
+    public abstract android.os.Bundle getPurchases(int,java.lang.String,java.lang.String,java.lang.String)
+    public abstract int consumePurchase(int,java.lang.String,java.lang.String)
+com.android.vending.billing.IInAppBillingService$Stub
+com.android.vending.billing.IInAppBillingService$Stub$Proxy
+com.monster.keepconnection.BuildConfig
+com.monster.keepconnection.InternetStatus:
+    1:1:public static com.monster.keepconnection.InternetStatus valueOf(java.lang.String)
+com.monster.keepconnection.MonitorDeviceService:
+    android.hardware.Camera camera
+    android.hardware.Camera$Parameters camera_parameters
+    257:266:public void warningScreen()
+    269:291:public void warningFlash(int)
+    294:316:public void warningAudio(int)
+com.monster.keepconnection.MonitorDeviceService$4
+com.monster.keepconnection.MonitorDeviceService$5
+com.monster.keepconnection.MonitorDeviceService$6
+com.monster.keepconnection.R
+com.monster.keepconnection.R$array
+com.monster.keepconnection.R$attr
+com.monster.keepconnection.R$dimen
+com.monster.keepconnection.R$drawable
+com.monster.keepconnection.R$id
+com.monster.keepconnection.R$layout
+com.monster.keepconnection.R$raw
+com.monster.keepconnection.R$string
+com.monster.keepconnection.R$style
+com.monster.keepconnection.R$xml
+com.monster.keepconnection.SettingActivity:
     public static final java.lang.String StartFromActivity
     static final int BuyFullVersionRequestCode
     static final java.lang.String IABRequestCode
     static final java.lang.String IABKey
     static final java.lang.String FullVersionID
-com.purplebrain.adbuddiz.sdk.AdBuddiz:
-    public static synchronized boolean isReadyToShowAd(android.app.Activity)
-    public static synchronized boolean isReadyToShowAd(android.app.Activity,java.lang.String)
-    private synchronized boolean a(android.app.Activity,java.lang.String)
-    public static synchronized void showAd(android.app.Activity,java.lang.String)
-com.purplebrain.adbuddiz.sdk.AdBuddizError:
-    public static com.purplebrain.adbuddiz.sdk.AdBuddizError valueOf(java.lang.String)
-com.purplebrain.adbuddiz.sdk.model.ABOrientation:
-    public static com.purplebrain.adbuddiz.sdk.model.ABOrientation[] values()
-com.purplebrain.adbuddiz.sdk.util.device.ABScreenHelper$AssetType:
-    public static com.purplebrain.adbuddiz.sdk.util.device.ABScreenHelper$AssetType[] values()
-    public static com.purplebrain.adbuddiz.sdk.util.device.ABScreenHelper$AssetType valueOf(java.lang.String)
-com.util.Base64:
-    public static final boolean ENCODE
-    public static final boolean DECODE
-    private static final byte EQUALS_SIGN
-    private static final byte NEW_LINE
-    private static final byte WHITE_SPACE_ENC
-    private static final byte EQUALS_SIGN_ENC
-    210:234:private static byte[] encode3to4(byte[],int,int,byte[],int,byte[])
-    247:247:public static java.lang.String encode(byte[])
-    258:258:public static java.lang.String encodeWebSafe(byte[],boolean)
-    274:286:public static java.lang.String encode(byte[],int,int,byte[],boolean)
-    301:345:public static byte[] encode(byte[],int,int,byte[],int)
-    431:432:public static byte[] decodeWebSafe(java.lang.String)
-    445:445:public static byte[] decode(byte[])
-    458:458:public static byte[] decodeWebSafe(byte[])
-    489:489:public static byte[] decodeWebSafe(byte[],int,int)
-com.util.Base64DecoderException:
-    private static final long serialVersionUID
+    77:82:public void ToastUiThread(android.content.Context,java.lang.String,int)
+com.monster.keepconnection.SettingActivity$2
+com.util.Base64
+com.util.Base64DecoderException
+com.util.IabException
 com.util.IabHelper:
+    boolean mSubscriptionsSupported
+    boolean mAsyncInProgress
+    java.lang.String mAsyncOperation
+    int mRequestCode
+    java.lang.String mPurchasingItemType
+    java.lang.String mSignatureBase64
     public static final int BILLING_RESPONSE_RESULT_OK
     public static final int BILLING_RESPONSE_RESULT_USER_CANCELED
     public static final int BILLING_RESPONSE_RESULT_BILLING_UNAVAILABLE
@@ -594,47 +583,51 @@ com.util.IabHelper:
     public static final java.lang.String ITEM_TYPE_SUBS
     public static final java.lang.String GET_SKU_DETAILS_ITEM_LIST
     public static final java.lang.String GET_SKU_DETAILS_ITEM_TYPE_LIST
+    163:167:public IabHelper(android.content.Context,java.lang.String)
     173:176:public void enableDebugLogging(boolean,java.lang.String)
     179:181:public void enableDebugLogging(boolean)
+    205:279:public void startSetup(com.util.IabHelper$OnIabSetupFinishedListener)
+    302:303:private void checkNotDisposed()
     307:308:public boolean subscriptionsSupported()
     333:334:public void launchPurchaseFlow(android.app.Activity,java.lang.String,int,com.util.IabHelper$OnIabPurchaseFinishedListener)
+    338:339:public void launchPurchaseFlow(android.app.Activity,java.lang.String,int,com.util.IabHelper$OnIabPurchaseFinishedListener,java.lang.String)
     343:344:public void launchSubscriptionPurchaseFlow(android.app.Activity,java.lang.String,int,com.util.IabHelper$OnIabPurchaseFinishedListener)
     348:349:public void launchSubscriptionPurchaseFlow(android.app.Activity,java.lang.String,int,com.util.IabHelper$OnIabPurchaseFinishedListener,java.lang.String)
+    371:422:public void launchPurchaseFlow(android.app.Activity,java.lang.String,java.lang.String,int,com.util.IabHelper$OnIabPurchaseFinishedListener,java.lang.String)
     439:518:public boolean handleActivityResult(int,int,android.content.Intent)
+    522:522:public com.util.Inventory queryInventory(boolean,java.util.List)
+    540:577:public com.util.Inventory queryInventory(boolean,java.util.List,java.util.List)
+    608:636:public void queryInventoryAsync(boolean,java.util.List,com.util.IabHelper$QueryInventoryFinishedListener)
+    639:640:public void queryInventoryAsync(com.util.IabHelper$QueryInventoryFinishedListener)
     643:644:public void queryInventoryAsync(boolean,com.util.IabHelper$QueryInventoryFinishedListener)
     657:687:void consume(com.util.Purchase)
     725:730:public void consumeAsync(com.util.Purchase,com.util.IabHelper$OnConsumeFinishedListener)
     738:741:public void consumeAsync(java.util.List,com.util.IabHelper$OnConsumeMultiFinishedListener)
+    751:774:public static java.lang.String getResponseDesc(int)
+    780:784:void checkSetupDone(java.lang.String)
+    788:798:int getResponseCodeFromBundle(android.os.Bundle)
     804:814:int getResponseCodeFromIntent(android.content.Intent)
+    819:824:void flagStartAsync(java.lang.String)
+    827:830:void flagEndAsync()
+    835:893:int queryPurchases(com.util.Inventory,java.lang.String)
+    898:939:int querySkuDetails(java.lang.String,com.util.Inventory,java.util.List)
     946:978:void consumeAsyncInternal(java.util.List,com.util.IabHelper$OnConsumeFinishedListener,com.util.IabHelper$OnConsumeMultiFinishedListener)
+    985:986:void logError(java.lang.String)
+    989:990:void logWarn(java.lang.String)
+com.util.IabHelper$1
+com.util.IabHelper$2
+com.util.IabHelper$2$1
 com.util.IabHelper$3
 com.util.IabHelper$3$1
 com.util.IabHelper$3$2
 com.util.IabHelper$OnConsumeFinishedListener
 com.util.IabHelper$OnConsumeMultiFinishedListener
-com.util.Inventory:
-    35:35:public com.util.SkuDetails getSkuDetails(java.lang.String)
-    45:45:public boolean hasPurchase(java.lang.String)
-    50:50:public boolean hasDetails(java.lang.String)
-    62:63:public void erasePurchase(java.lang.String)
-    67:67:java.util.List getAllOwnedSkus()
-    81:81:java.util.List getAllPurchases()
-com.util.Purchase:
-    51:51:public java.lang.String getOrderId()
-    52:52:public java.lang.String getPackageName()
-    54:54:public long getPurchaseTime()
-    55:55:public int getPurchaseState()
-    56:56:public java.lang.String getDeveloperPayload()
-    58:58:public java.lang.String getOriginalJson()
-    59:59:public java.lang.String getSignature()
-com.util.Security:
-    private static final java.lang.String TAG
-    private static final java.lang.String KEY_FACTORY_ALGORITHM
-    private static final java.lang.String SIGNATURE_ALGORITHM
-    39:39:public Security()
-com.util.SkuDetails:
-    34:35:public SkuDetails(java.lang.String)
-    49:49:public java.lang.String getType()
-    50:50:public java.lang.String getPrice()
-    51:51:public java.lang.String getTitle()
-    52:52:public java.lang.String getDescription()
+com.util.IabHelper$OnIabPurchaseFinishedListener:
+    public abstract void onIabPurchaseFinished(com.util.IabResult,com.util.Purchase)
+com.util.IabHelper$OnIabSetupFinishedListener
+com.util.IabHelper$QueryInventoryFinishedListener
+com.util.IabResult
+com.util.Inventory
+com.util.Purchase
+com.util.Security
+com.util.SkuDetails

@@ -158,7 +158,7 @@ public class MonitorDeviceService extends Service {
 							if (iType != ConnectivityManager.TYPE_MOBILE) {
 								updateAPN(MonitorDeviceService.this, true);
 								isStatus = InternetStatus.None;
-								hToastMessage.sendMessage(setStringMessage("Mobile_Data_Off  -> Turn Off APN [" + String.valueOf(iType) + "]"));
+								hToastMessage.sendMessage(setStringMessage("Mobile_Data_Off  -> Turn On APN [" + String.valueOf(iType) + "]"));
 							} else {
 								hToastMessage.sendMessage(setStringMessage("Still Mobile_Data_Off\nNow is ConnectivityManager.TYPE_MOBILE"));
 							}
@@ -198,23 +198,6 @@ public class MonitorDeviceService extends Service {
 	boolean isConnectingToInternet() {
 		boolean bRET = false;
 		try {
-			// switch (isStatus) {
-			// case Internet_Success:
-			// case None:
-			// case Mobile_Data_Off:
-			// case Wifi_Data_Off:
-			// iTimeout = 15000;
-			// break;
-			// case Internet_Failed:
-			// case Internet_Unknow:
-			// case Mobile_Data_Failed:
-			// case Wifi_Data_Failed:
-			// iTimeout = 5000;
-			// break;
-			// default:
-			// iTimeout = 15000;
-			// }
-
 			URLConnection connection = new URL("http://www.google.com.tw").openConnection();
 			connection.setConnectTimeout(iTimeout);
 			connection.setReadTimeout(iTimeout);
