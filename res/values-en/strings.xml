@@ -2,33 +2,30 @@
 <resources>
 
     <!-- Language -->
-    <string name="app_name">保持連線</string>
-    <string name="run_in_service">保持連線 監視中...</string>
-    <string name="setting">設定</string>
-    <string name="scan_sec">檢查網路間隔時間</string>
-    <string name="warning_toast">目前網路連線異常，請確認!</string>
-    <string name="action_3g_retry_strategy">行動網路錯誤處理方式</string>
-    <string name="action_wifi_retry_strategy">Wifi錯誤處理方式</string>
-    <string name="auto_start">開機自動啟動</string>
-    <string name="today_last_connect_count">今日剩餘重新連線次數:</string>
-    <string name="reconnect_last_time">上次恢復連線時間:</string>
-    <string name="upgrade_app">支持本程式，升級捐贈版本後將可取消所有限制!</string>
-    <string name="support_me">支持本程式</string>
-    <string name="support_me_hint">您的支持可以幫助小弟開發更多新程式，\n支持本程式後，將可去除廣告及啟動所有功能。\n若您已支持過，也請點此直接升級為捐贈版本!</string>
-    <string name="warning_method">提示方式</string>
-    <string name="warning_flash">相機閃光燈閃爍</string>
-    <string name="warning_screen">螢幕亮起提示</string>
-    <string name="warning_audio">聲音提示</string>
-    <string name="warning_vibrate">震動提示</string>
-    <string name="option_on">開啟</string>
-    <string name="option_off">關閉</string>
-    <string name="option_ok">我知道了</string>
-    <string name="iabhelper_failed">查詢購買資訊失敗，請稍後再試!</string>
-    <string name="iabhelper_fullversion">感謝您的支持，將啟用所有功能。</string>
+    <string name="app_name">Keep Connection</string>
+    <string name="run_in_service">Keep Connection working...</string>
+    <string name="setting">Setting</string>
+    <string name="scan_sec">Check interval timer</string>
+    <string name="warning_toast">Internet Error! Please Check...</string>
+    <string name="action_3g_retry_strategy">Mobile data Error Action</string>
+    <string name="action_wifi_retry_strategy">Wifi data Error Action</string>
+    <string name="auto_start">Autostart at reboot</string>
+    <string name="reconnect_last_time">Recover Internet Time</string>
+    <string name="reconnect_not_yet">Internet stable</string>
+    <string name="support_me">Support this App</string>
+    <string name="support_me_hint">Your support can help me to develop more apps,\nSupport this app, all features are enabled and AD will be remove.\nIf you had supported, please click here and upgrade to all features version.</string>
+    <string name="warning_method">Warning Mode</string>
+    <string name="warning_audio">Sound Alert</string>
+    <string name="warning_vibrate">Vibrate Alert</string>
+    <string name="option_on">On</string>
+    <string name="option_off">Off</string>
+    <string name="option_ok">OK</string>
+    <string name="iabhelper_failed">Retrieve transaction data failed, Please try later!</string>
+    <string name="iabhelper_fullversion">Thanks, all features are enabled.</string>
 
     <string-array name="action_3g_retry_strategy_option_string">
-        <item>3G 網路重新連線</item>
-        <item>以飛航模式重新連線</item>
+        <item>Shutdown Mobile data and restart</item>
+        <item>Use Airplane mode to recover</item>
     </string-array>
     <string-array name="action_3g_retry_strategy_option_value">
         <item>action_3g_retry</item>
@@ -43,10 +40,10 @@
         <item>action_wifi_restart</item>
     </string-array>
     <string-array name="warning_option_string">
-        <item>關閉</item>
-        <item>5秒</item>
-        <item>15秒</item>
-        <item>60秒</item>
+        <item>off</item>
+        <item>5 sec</item>
+        <item>15 sec</item>
+        <item>60 sec</item>
     </string-array>
     <string-array name="warning_option_value">
         <item>0</item>
@@ -55,13 +52,13 @@
         <item>60</item>
     </string-array>
     <string-array name="scan_sec_string">
-        <item>關閉</item>
-        <item>10秒</item>
-        <item>30秒</item>
-        <item>60秒</item>
-        <item>3分鐘</item>
-        <item>5分鐘</item>
-        <item>10分鐘</item>
+        <item>off</item>
+        <item>10 sec</item>
+        <item>30 sec</item>
+        <item>60 sec</item>
+        <item>3 minutes</item>
+        <item>5 minutes</item>
+        <item>10 minutes</item>
     </string-array>
     <string-array name="scan_sec_value">
         <item>0</item>
@@ -72,20 +69,5 @@
         <item>300</item>
         <item>600</item>
     </string-array>
-
-    <!-- Preference Key -->
-    <string name="key_setting_title">key_setting_title</string>
-    <string name="key_scan_sec">key_scan_sec</string>
-    <string name="key_action_3g_retry_strategy">key_action_3g_retry_strategy</string>
-    <string name="key_action_wifi_retry_strategy">key_action_wifi_retry_strategy</string>
-    <string name="key_setting_auto_start">key_setting_auto_start</string>
-    <string name="key_last_uses_times">key_last_uses_times</string>
-    <string name="key_setting_support_me">key_setting_support_me</string>
-    <string name="key_notify_title">key_notify_title</string>
-    <string name="key_notify_screen">key_notify_screen</string>
-    <string name="key_notify_flash">key_notify_flash</string>
-    <string name="key_notify_audio">key_notify_audio</string>
-    <string name="key_notify_vibrate">key_notify_vibrate</string>
-    <string name="key_full_version">key_full_version</string>
 
 </resources>

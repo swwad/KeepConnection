@@ -9,6 +9,7 @@ import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.app.Notification;
@@ -17,9 +18,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.hardware.Camera;
-import android.hardware.Camera.CameraInfo;
-import android.hardware.Camera.Parameters;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
@@ -30,10 +28,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.os.PowerManager;
-import android.os.PowerManager.WakeLock;
-import android.os.SystemClock;
 import android.os.Vibrator;
+import android.widget.Toast;
 
 enum InternetStatus {
 	None, Mobile_Data_Failed, Mobile_Data_Off, AIR_PLANE, Internet_Unknow, Internet_Failed, Internet_Success;
@@ -42,9 +38,6 @@ enum InternetStatus {
 public class MonitorDeviceService extends Service {
 
 	NotificationManager mNM;
-	Camera camera;
-	Parameters camera_parameters;
-	int iBackCameraID = -1;
 
 	boolean bStopAllWarning = false;
 	boolean bMonitorServiceThread = false;;
@@ -55,14 +48,7 @@ public class MonitorDeviceService extends Service {
 
 	@Override
 	public void onCreate() {
-		for (int i = 0; i < Camera.getNumberOfCameras(); i++) {
-			CameraInfo info = new CameraInfo();
-			Camera.getCameraInfo(i, info);
-			if (info.facing == CameraInfo.CAMERA_FACING_BACK) {
-				iBackCameraID = i;
-				break;
-			}
-		}
+
 	}
 
 	@Override
@@ -75,7 +61,6 @@ public class MonitorDeviceService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		try {
 			if (getSharedPreferences(getPackageName(), MODE_PRIVATE).getBoolean(getString(R.string.key_setting_auto_start), false) || intent.getBooleanExtra(SettingActivity.StartFromActivity, false)) {
-				bStopAllWarning = false;
 				isStatus = InternetStatus.None;
 				showNotification();
 				if (bMonitorServiceThread == false) {
@@ -97,14 +82,12 @@ public class MonitorDeviceService extends Service {
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			AddLog("Log.txt", msg.getData().getString("Message"));
-			// Toast.makeText(MonitorDeviceService.this,
-			// msg.getData().getString("Message"), Toast.LENGTH_LONG).show();
+			Toast.makeText(MonitorDeviceService.this, msg.getData().getString("Message"), Toast.LENGTH_LONG).show();
 		}
 	};
 
 	Message setStringMessage(String strMessage) {
 		Bundle bData = new Bundle();
-		// bData.putString("Message", "Inter_Success or None");
 		bData.putString("Message", strMessage);
 		Message msMessage = new Message().obtain();
 		msMessage.setData(bData);
@@ -121,12 +104,15 @@ public class MonitorDeviceService extends Service {
 					hToastMessage.sendMessage(setStringMessage("Wifi do nothing"));
 				} else {
 					if (isConnectingToInternet() == false) {
-						warningVibrator(2);
 						switch (isStatus) {
 						case Internet_Success:
 						case None:
 							isStatus = InternetStatus.Internet_Failed;
 							hToastMessage.sendMessage(setStringMessage("Internet_Failed"));
+							warningVibrator(Integer.valueOf(getSharedPreferences(getPackageName(), MODE_PRIVATE).getString(getString(R.string.key_notify_vibrate), "0")));
+							// warningAudio(Integer.valueOf(getSharedPreferences(getPackageName(),
+							// MODE_PRIVATE).getString(getString(R.string.key_notify_audio),
+							// "0")));
 							break;
 						case Internet_Failed:
 							if (getConnectType() == ConnectivityManager.TYPE_MOBILE) {
@@ -157,6 +143,8 @@ public class MonitorDeviceService extends Service {
 							int iType = getConnectType();
 							if (iType != ConnectivityManager.TYPE_MOBILE) {
 								updateAPN(MonitorDeviceService.this, true);
+								getSharedPreferences(getPackageName(), MODE_PRIVATE).edit()
+										.putString(getString(R.string.key_last_connect_time), new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date())).commit();
 								isStatus = InternetStatus.None;
 								hToastMessage.sendMessage(setStringMessage("Mobile_Data_Off  -> Turn On APN [" + String.valueOf(iType) + "]"));
 							} else {
@@ -186,7 +174,17 @@ public class MonitorDeviceService extends Service {
 				}
 
 				try {
-					Thread.sleep(5000);
+					if ((isStatus == InternetStatus.Internet_Success) || (getConnectType() == ConnectivityManager.TYPE_WIFI) || (getConnectType() == ConnectivityManager.TYPE_WIMAX)) {
+						if (Integer.valueOf(getSharedPreferences(getPackageName(), MODE_PRIVATE).getString(getString(R.string.key_scan_sec), "30")) == 0) {
+							bMonitorServiceThread = false;
+							stopSelf();
+						} else {
+							Thread.sleep(Integer.valueOf(getSharedPreferences(getPackageName(), MODE_PRIVATE).getString(getString(R.string.key_scan_sec), "30")) * 1000);
+						}
+					} else {
+						Thread.sleep(5000);
+					}
+
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -253,43 +251,6 @@ public class MonitorDeviceService extends Service {
 		}.start();
 	}
 
-	public void warningScreen() {
-		new Thread() {
-			public void run() {
-				synchronized (this) {
-					PowerManager pm = (PowerManager) getApplicationContext().getSystemService(Context.POWER_SERVICE);
-					WakeLock wakeLock = pm.newWakeLock((PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP), "TAG");
-					wakeLock.acquire();
-				}
-			}
-		}.start();
-	}
-
-	public void warningFlash(final int iSec) {
-		camera = Camera.open(iBackCameraID);
-		camera_parameters = camera.getParameters();
-		new Thread() {
-			public void run() {
-				synchronized (this) {
-					if (iBackCameraID != -1) {
-						for (int i = 0; i < iSec; i++) {
-							if (bStopAllWarning)
-								break;
-							camera_parameters.setFlashMode(Parameters.FLASH_MODE_TORCH);
-							camera.setParameters(camera_parameters);
-							SystemClock.sleep(500);
-							camera_parameters.setFlashMode(Parameters.FLASH_MODE_OFF);
-							camera.setParameters(camera_parameters);
-							SystemClock.sleep(500);
-						}
-						camera.stopPreview();
-						camera.release();
-					}
-				}
-			}
-		}.start();
-	}
-
 	public void warningAudio(final int iSec) {
 		AudioManager audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
 		audioManager.setSpeakerphoneOn(true);
@@ -317,9 +278,15 @@ public class MonitorDeviceService extends Service {
 
 	private void showNotification() {
 		Notification notification = new Notification(R.drawable.ic_launcher, getString(R.string.run_in_service), System.currentTimeMillis());
-		// notification.flags = Notification.FLAG_NO_CLEAR;
+		notification.flags = Notification.FLAG_NO_CLEAR;
 		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, MonitorDeviceService.class), 0);
-		notification.setLatestEventInfo(this, getString(R.string.run_in_service), getString(R.string.iabhelper_fullversion), contentIntent);
+
+		if (getSharedPreferences(getPackageName(), MODE_PRIVATE).getBoolean(getString(R.string.key_full_version), false)) {
+			notification.setLatestEventInfo(this, getString(R.string.run_in_service), getString(R.string.iabhelper_fullversion), contentIntent);
+		} else {
+			notification.setLatestEventInfo(this, getString(R.string.run_in_service), "", contentIntent);
+		}
+		
 		mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		mNM.notify(R.string.app_name, notification);
 	}

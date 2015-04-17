@@ -22,7 +22,8 @@
             android:entries="@array/action_wifi_retry_strategy_option_string"
             android:entryValues="@array/action_wifi_retry_strategy_option_value"
             android:key="@string/key_action_wifi_retry_strategy"
-            android:title="@string/action_wifi_retry_strategy" />        -->
+            android:title="@string/action_wifi_retry_strategy" />
+        -->
         <CheckBoxPreference
             android:defaultValue="false"
             android:enabled="false"
@@ -32,7 +33,7 @@
         <Preference
             android:key="@string/key_last_uses_times"
             android:summary="@string/reconnect_last_time"
-            android:title="@string/today_last_connect_count" />
+            android:title="@string/reconnect_not_yet" />
         <Preference
             android:key="@string/key_setting_support_me"
             android:summary="@string/support_me_hint"
@@ -49,24 +50,11 @@
             android:title="@string/warning_audio" />
         <ListPreference
             android:defaultValue="0"
+            android:enabled="false"
             android:entries="@array/warning_option_string"
             android:entryValues="@array/warning_option_value"
             android:key="@string/key_notify_vibrate"
             android:title="@string/warning_vibrate" />
-
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:enabled="false"
-            android:key="@string/key_notify_screen"
-            android:title="@string/warning_screen" />
-
-        <ListPreference
-            android:defaultValue="0"
-            android:enabled="false"
-            android:entries="@array/warning_option_string"
-            android:entryValues="@array/warning_option_value"
-            android:key="@string/key_notify_flash"
-            android:title="@string/warning_flash" />
     </PreferenceCategory>
 
 </PreferenceScreen>

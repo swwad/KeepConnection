@@ -8,13 +8,13 @@
         android:id="@android:id/list"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="100" />
+        android:layout_weight="105" />
 
     <LinearLayout
         android:id="@+id/llAd"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="1132"
+        android:layout_weight="1127"
         android:orientation="vertical" />
 
 </LinearLayout>

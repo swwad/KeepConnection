@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Language -->
+    <string name="app_name">保持联机</string>
+    <string name="run_in_service">保持联机 监视中...</string>
+    <string name="setting">设定</string>
+    <string name="scan_sec">检查网络间隔时间</string>
+    <string name="warning_toast">目前网络联机异常，请确认!</string>
+    <string name="action_3g_retry_strategy">行动网络错误处理方式</string>
+    <string name="action_wifi_retry_strategy">Wifi错误处理方式</string>
+    <string name="auto_start">开机自动启动</string>
+    <string name="reconnect_last_time">上次恢复联机时间:</string>
+    <string name="reconnect_not_yet">网络联机稳定</string>
+    <string name="support_me">支持本程序</string>
+    <string name="support_me_hint">您的支持可以帮助小弟开发更多新程序，\n支持本程序后，将可去除广告及启动所有功能。\n若您已支持过，也请点此直接升级为捐赠版本!</string>
+    <string name="warning_method">提示方式</string>
+    <string name="warning_audio">声音提示</string>
+    <string name="warning_vibrate">震动提示</string>
+    <string name="option_on">开启</string>
+    <string name="option_off">关闭</string>
+    <string name="option_ok">我知道了</string>
+    <string name="iabhelper_failed">查询购买信息失败，请稍后再试!</string>
+    <string name="iabhelper_fullversion">感谢您的支持，将启用所有功能。</string>
+
+    <string-array name="action_3g_retry_strategy_option_string">
+        <item>行动数据网络重新联机</item>
+        <item>以飞航模式重新联机</item>
+    </string-array>
+    <string-array name="action_3g_retry_strategy_option_value">
+        <item>action_3g_retry</item>
+        <item>action_airplane_retry</item>
+    </string-array>
+    <string-array name="action_wifi_retry_strategy_option_string">
+        <item>强制切换至行动网络联机</item>
+        <item>以Wifi重新联机</item>
+    </string-array>
+    <string-array name="action_wifi_retry_strategy_option_value">
+        <item>action_wifi_to_3g</item>
+        <item>action_wifi_restart</item>
+    </string-array>
+    <string-array name="warning_option_string">
+        <item>关闭</item>
+        <item>5秒</item>
+        <item>15秒</item>
+        <item>60秒</item>
+    </string-array>
+    <string-array name="warning_option_value">
+        <item>0</item>
+        <item>5</item>
+        <item>15</item>
+        <item>60</item>
+    </string-array>
+    <string-array name="scan_sec_string">
+        <item>关闭</item>
+        <item>10秒</item>
+        <item>30秒</item>
+        <item>60秒</item>
+        <item>3分钟</item>
+        <item>5分钟</item>
+        <item>10分钟</item>
+    </string-array>
+    <string-array name="scan_sec_value">
+        <item>0</item>
+        <item>10</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>300</item>
+        <item>600</item>
+    </string-array>
+
+</resources>
