@@ -81,8 +81,10 @@ public class MonitorDeviceService extends Service {
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
-			AddLog("Log.txt", msg.getData().getString("Message"));
-			Toast.makeText(MonitorDeviceService.this, msg.getData().getString("Message"), Toast.LENGTH_LONG).show();
+			if (BuildConfig.DEBUG) {
+				AddLog("Log.txt", msg.getData().getString("Message"));
+				Toast.makeText(MonitorDeviceService.this, msg.getData().getString("Message"), Toast.LENGTH_LONG).show();
+				}
 		}
 	};
 
